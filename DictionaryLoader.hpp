@@ -11,13 +11,17 @@
 class DictionaryLoader {
 
     public:
-        DictionaryLoader(std::string dictionaryFile);
-
+        //DictionaryLoader(std::string dictionaryFile);
+        // use default constructor 
         //pass the dictionary to to a speaker
+
         std::vector<Word> getDictionary(){return dictionary;}
 
         //outputs the dictionary as an xml file
-        void OutputDictionary();
+        void OutputDictionary(std::vector<Word> Speakerdictionary);
+
+        //inputs the xml files to dictionaries
+        void InputDictionary(std::string dictionaryFile);
 
     private:
         

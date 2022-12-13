@@ -1,0 +1,1 @@
+python3 randomDictCreator.py --MaxWordLength 15 --AmountOfWords 20 --MaxAmountOfVowels 5 --FileName InputDict1.xml

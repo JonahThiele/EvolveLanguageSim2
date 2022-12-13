@@ -20,6 +20,31 @@ Speaker::Speaker(int x, int y, std::vector<Word> dictionary)
 
     this->dictionary = dictionary;
 
+    //WRandGen::setUpgenerator();
+
+}
+
+bool Speaker::compare(Speaker &otherSpeaker)
+{
+    int similarityCount = 0;
+    if(otherSpeaker.getX() == x && otherSpeaker.getY() == y)
+    {
+        for(Word word : dictionary)
+        {
+            for(Word otherWord : otherSpeaker.getDict())
+            {
+                if(word.getValue() == otherWord.getValue())
+                {
+                    similarityCount++;
+                }
+            }
+        }
+        
+        return (similarityCount == dictionary.size())? true : false;
+
+    } else{
+        return false;
+    }
 }
 
 std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
@@ -27,7 +52,8 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
     std::vector<Word> sharedDictionary;
     
     //make sure other person is not self, the speakers can't exchange dictionaries and words with themselves
-    if(this == &otherPerson || std::abs(otherPerson.getX() - x) > 4 || std::abs(otherPerson.getY() - y) > 4 )
+    //std::abs(otherPerson.getX() - x) > 4 || std::abs(otherPerson.getY() - y) > 4  remove distance parameter for now
+    if(this->compare(otherPerson))
     {
         return sharedDictionary; 
     }
@@ -36,30 +62,45 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
    
     std::uniform_int_distribution<uint_least32_t> distributePercentShare( 0,  99);
 
-    int amntWordShared = dictionary.size() * ((distributePercentShare(gen) + 1) / 100);
+    int amntWordShared = dictionary.size() * (float)((distributePercentShare(LangSeed::rng) + 1) / 100);
 
     //shuffle the dictionary to share different words each time
     std::shuffle(std::begin(dictionary), std::end(dictionary), std::default_random_engine());
+
+    //remove blank strings words from dictionaries
+    for(int i = 0; i < dictionary.size(); i++)
+    {
+        if(dictionary[i].getValue() == "")
+        {
+            dictionary.erase(dictionary.begin() + i);
+        }
+    }
 
     for(int i = 0; i < amntWordShared; i++)
     {
         std::uniform_int_distribution<uint_least32_t> distPercentMutate( 0,  99);
 
-        if(distPercentMutate(gen) + 1 <= PERCENT_SHARED_MUTATION)
+        if(distPercentMutate(LangSeed::rng) + 1 <= PERCENT_SHARED_MUTATION)
         {
             // seed for the random different mutation methods ( 13 are currently defined )
-            std::uniform_int_distribution<uint_least32_t> distPercentMutate( 0,  13); 
+            std::uniform_int_distribution<uint_least32_t> distWhichMutation( 0,  13); 
 
-            switch(distPercentMutate(gen))
+            switch(distWhichMutation(LangSeed::rng) )
             {
                 case 0:
                     {
                     //lengthen the vowels
-                    std::vector<std::string> vowelList;
+                    std::vector<std::string> vowelList = {};
                     //grab the vowel pool from the dictionary
                     for(Word word : dictionary)
                     {
-                        vowelList.insert(vowelList.end(), word.getVowels().begin(), word.getVowels().end());
+                        
+                        //vowelList.insert(vowelList.end(), word.getVowels().begin(), word.getVowels().begin() + word.getVowels().size());
+                        //insert was broken so I reverted to the naive way and just used a simple loop
+                        for(std::string vowel : word.getVowels())
+                        {
+                            vowelList.push_back(vowel);
+                        }
                     }
 
                     Word sharedWord = dictionary[i].LengthenVowel(vowelList);
@@ -71,11 +112,16 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 1:
                     {
                     //shorten the vowels 
-                    std::vector<std::string> vowelList;
+                    std::vector<std::string> vowelList = {};
                     //grab the vowel pool from the dictionary
                     for(Word word : dictionary)
                     {
-                        vowelList.insert(vowelList.end(), word.getVowels().begin(), word.getVowels().end());
+                        //vowelList.insert(vowelList.end(), word.getVowels().begin(), word.getVowels().begin() + word.getVowels().size());
+                        //insert was broken so I reverted to the naive way and just used a simple loop
+                        for(std::string vowel : word.getVowels())
+                        {
+                            vowelList.push_back(vowel);
+                        }
                     }
 
                     Word sharedWord = dictionary[i].ShortenVowel(vowelList);
@@ -94,14 +140,14 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 3:
                     {
                     //add suffix
-                    std::vector<std::string> suffixList;
+                    std::vector<std::string> suffixList = {};
                     //grab the suffix pool from the dictionary
 
                     for(Word word : dictionary)
                     {
                         //suffix should not be greater than 25% of the word
-                        std::uniform_int_distribution<uint_least32_t> distSuffix( 0,  (int)(word.getValue().length() * 0.25));
-                        int lengthOfSuffix = distSuffix(gen);
+                        std::uniform_int_distribution<uint_least32_t> distSuffix((int)(word.getValue().length() * 0.75), (int)(word.getValue().length() - 1));
+                        int lengthOfSuffix = distSuffix(LangSeed::rng);
                         //the substr reads until the end of the string
                         suffixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfSuffix));
                     }
@@ -114,14 +160,14 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 4:
                     {
                     //add prefix 
-                    std::vector<std::string> prefixList;
+                    std::vector<std::string> prefixList = {};
                     //grab the suffix pool from the dictionary
 
                     for(Word word : dictionary)
                     {
-                        //suffix should not be greater than 25% of the word
+                        //suffix should not be greater than 25% of the word                         
                         std::uniform_int_distribution<uint_least32_t> distPrefix( 0,  (int)(word.getValue().length() * 0.25));
-                        int lengthOfPrefix = distPrefix(gen);
+                        int lengthOfPrefix = distPrefix(LangSeed::rng);
                         //the substr reads until the end of the string
                         prefixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfPrefix));
                     }
@@ -150,10 +196,10 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     // shrink
                     //generate start and stop ints 
                     std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
-                    int start = distStart(gen);
+                    int start = distStart(LangSeed::rng);
 
                     std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().size() - 1);
-                    int end = distEnd(gen);
+                    int end = distEnd(LangSeed::rng);
 
                     Word sharedWord = dictionary[i].Shrink(start, end);
                     sharedDictionary.push_back(sharedWord);
@@ -163,39 +209,52 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 7:
                     {
                     //mix
-                    std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
-                    int start = distStart(gen);
+                
+                    std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().length() - 2);
+                    int start = distStart(LangSeed::rng);
 
-                    std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().size() - 1);
-                    int end = distEnd(gen);
+                    std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().length() - 1);
+                    int end = distEnd(LangSeed::rng);
 
                     //grab random other word from the dictionary
                     std::uniform_int_distribution<uint_least32_t> distRandWord( 0,  dictionary.size() - 1);
-                    Word otherWord = dictionary[distRandWord(gen)];
+                    Word otherWord = dictionary[distRandWord(LangSeed::rng)];
 
-                    std::uniform_int_distribution<uint_least32_t> distOtherStart( 0,  dictionary[i].getValue().size() - 2);
-                    int otherStart = distOtherStart(gen);
+                    //skip if it is a single or double char character
+                    if(dictionary[i].getValue().length() < 3 || otherWord.getValue().length() < 3)
+                    {
+                        sharedDictionary.push_back(dictionary[i]);
+                    } else 
+                    {
+                        std::uniform_int_distribution<uint_least32_t> distOtherStart( 0, otherWord.getValue().length() - 2);
+                        int otherStart = distOtherStart(LangSeed::rng);
 
-                    std::uniform_int_distribution<uint_least32_t> distOtherEnd( start,   dictionary[i].getValue().size() - 1);
-                    int otherEnd = distOtherEnd(gen);
+                        std::uniform_int_distribution<uint_least32_t> distOtherEnd( start,   otherWord.getValue().length() - 1);
+                        int otherEnd = distOtherEnd(LangSeed::rng);
 
-                    Word sharedWord = dictionary[i].Mix(start, end, otherStart, otherEnd, otherWord);
-                    sharedDictionary.push_back(sharedWord);
+                        Word sharedWord = dictionary[i].Mix(start, end, otherStart, otherEnd, otherWord);
+                        sharedDictionary.push_back(sharedWord); 
+                    }
                     }
                     break;
                 case 8:
                     {
                     //negate
-                     std::vector<std::string> negateList;
+                     std::vector<std::string> negateList = {};
                     //grab the negation prefix pool from the dictionary
 
                     for(Word word : dictionary)
                     {
                         //prefixfix should not be greater than three chars
                         std::uniform_int_distribution<uint_least32_t> distNegPrefix( 0,  2);
-                        int lengthOfNegPrefix = distNegPrefix(gen);
+                        int lengthOfNegPrefix = distNegPrefix(LangSeed::rng);
                         //the substr reads until the end of the string
-                        negateList.push_back(word.getValue().substr(word.getValue().length() - lengthOfNegPrefix));
+                        int wordLen = word.getValue().length();
+                        if((wordLen - lengthOfNegPrefix) > 0){
+
+                            negateList.push_back(word.getValue().substr(word.getValue().length() - lengthOfNegPrefix -1));
+                        }
+                        
                     }
 
                     Word sharedWord = dictionary[i].Negate(negateList);
@@ -207,21 +266,27 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 9:
                     {
                         //subsitute
-                        std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
-                        int start = distStart(gen);
+                        std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().length() - 2);
+                        int start = distStart(LangSeed::rng);
 
-                        std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().size() - 1);
-                        int end = distEnd(gen);
+                        std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().length() - 1);
+                        int end = distEnd(LangSeed::rng);
 
                         std::uniform_int_distribution<uint_least32_t> distRandWord( 0,  dictionary.size() - 1);
-                        Word otherWord = dictionary[distRandWord(gen)];
+                        Word otherWord = dictionary[distRandWord(LangSeed::rng)];
 
-                        while(otherWord.getValue().size() < end)
+                        bool lengthCheck = otherWord.getValue().length() < end;
+                        bool replaceFlag = false;
+                        while(lengthCheck)
                         {
-                            Word otherWord = dictionary[distRandWord(gen)];
+                            Word otherWord = dictionary[distRandWord(LangSeed::rng)];
+                            lengthCheck = otherWord.getValue().length() < (end - start);
+                            //turn on the replace whole word flag
+                            replaceFlag = true;
+
                         }
 
-                        Word sharedWord = dictionary[i].Subsitute(start, end, otherWord);
+                        Word sharedWord = dictionary[i].Subsitute(start, end, otherWord, replaceFlag);
                         sharedDictionary.push_back(sharedWord);
 
                     }
@@ -232,7 +297,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                      std::uniform_int_distribution<uint_least32_t> distStart( DEFAULT_NEW_WORD_SIZE_MIN,  DEFAULT_NEW_WORD_SIZE_MAX);
                      
-                     Word sharedWord = dictionary[i].CreateNew(distStart(gen), true);
+                     Word sharedWord = dictionary[i].CreateNew(distStart(LangSeed::rng), true);
                      sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -240,17 +305,32 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 11:
                     {
                      //clip end
-                     std::uniform_int_distribution<uint_least32_t> distStart( dictionary[i].getValue().size() - (dictionary[i].getValue().size() * 0.75), dictionary[i].getValue().size() - 1);
+                     // check if the word is one char then skip
+                     if(dictionary[i].getValue().length() < 2)
+                     {
+                        sharedDictionary.push_back(dictionary[i]);
+                     } else 
+                     {
+                        std::uniform_int_distribution<uint_least32_t> distStart( dictionary[i].getValue().length() - (int)(dictionary[i].getValue().length() * 0.75), dictionary[i].getValue().length() - 1);
                      
-                     Word sharedWord = dictionary[i].ClipEnd(distStart(gen));
-                     sharedDictionary.push_back(sharedWord);
+                        Word sharedWord = dictionary[i].ClipEnd(distStart(LangSeed::rng));
+                        sharedDictionary.push_back(sharedWord);
+                     }
                     }
                     break;
                 case 12:
                     {
+                     // make the length 1 if the quartering doesn't work
+                     int end;
+                     if((int)(dictionary[i].getValue().length() * 0.25) < 1)
+                     {
+                        end = 1;
+                     } else {
+                        end = (int)(dictionary[i].getValue().length() * 0.25);
+                     }
                      //clip front
-                     std::uniform_int_distribution<uint_least32_t> distStart( 1, dictionary[i].getValue().size() * 0.25);
-                     Word sharedWord = dictionary[i].ClipEnd(distStart(gen));
+                     std::uniform_int_distribution<uint_least32_t> distStart( 1, (int)(dictionary[i].getValue().length() * 0.25));
+                     Word sharedWord = dictionary[i].ClipFront(distStart(LangSeed::rng));
                      sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -259,7 +339,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     {
                     //compound
                         std::uniform_int_distribution<uint_least32_t> distRandWord( 0,  dictionary.size() - 1);
-                        Word otherWord = dictionary[distRandWord(gen)];
+                        Word otherWord = dictionary[distRandWord(LangSeed::rng)];
 
                         Word sharedWord = dictionary[i].Compound(otherWord);
                         sharedDictionary.push_back(sharedWord);
@@ -316,6 +396,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                 default:
                     {
+                    
                      //create pesudo null object to check in the learning function
                      std::vector<std::string> dummyList = {"DEFAULT"};
                      Word sharedWord = Word("DEFAULT", "DEFAULT", dummyList);
@@ -345,17 +426,20 @@ void Speaker::learnWords(std::vector<Word> sharedWords)
             if(dictionary[i].Equal(sharedWords[b]))
             {
                 b--;
+                std::cout << "Equal\n";
                 sharedWords.erase(sharedWords.begin() + b);
                 continue;
             }
 
         }
+
     }
     
-    if(sharedWords.size())
+    if(sharedWords.size() > 0)
     {
         //put filtered words into the dictionary
         dictionary.insert( dictionary.end(), sharedWords.begin(), sharedWords.end() ); 
+        
     }
 
 }

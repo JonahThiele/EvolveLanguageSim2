@@ -40,10 +40,10 @@ Word Word::LengthenVowel(std::vector<std::string> vowelPool)
     {
         for(std::string poolVowel : vowelPool)
         {
-            if(poolVowel.size() > vowel.size())
+            if(poolVowel.size() >= vowel.size())
             {
                 LongVowelPool.push_back(poolVowel);
-            } else if( poolVowel.size() == vowel.size() && vowel.size() == 1)
+            } else if( poolVowel.size() <= vowel.size() && vowel.size() == 1)
             {
                 //figure out how to handle if all the pool and the vowels are one char
             }
@@ -51,47 +51,56 @@ Word Word::LengthenVowel(std::vector<std::string> vowelPool)
     }
 
     //find the index of the vowel in the word and replace it with a random one from the vowel pool.
-    std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size());
-    size_t indexOfVowel = value.find(vowels[distVowel(gen)]);
+    std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size()-1);
+    std::vector<std::string>::iterator it = std::find(vowels.begin(), vowels.end(), vowels[distVowel(LangSeed::rng)]);
+    int indexOfVowel = it - vowels.begin();
 
-    std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  LongVowelPool.size());
+    std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  LongVowelPool.size() -1);
 
-    std::string tempVal = value.erase(indexOfVowel, 1).insert(indexOfVowel + 1, LongVowelPool[distVowelPool(gen)]);
+    std::string tempVal = value.erase(indexOfVowel, 1).insert(indexOfVowel, LongVowelPool[distVowelPool(LangSeed::rng)]);
     return Word(tempVal, meaning, vowels);
 }
 
 Word Word::ShortenVowel(std::vector<std::string> vowelPool)
 {
-    std::vector<std::string> ShortVowelPool;
-    for( std::string vowel : vowels)
+    //check if the word is only one char
+    if(this->value.size() < 2)
     {
-        for(std::string poolVowel : vowelPool)
+        return Word(this->value, this->meaning, this->vowels); 
+    } else {
+       std::vector<std::string> ShortVowelPool;
+        for( std::string vowel : vowels)
         {
-            if(poolVowel.size() < vowel.size())
+            for(std::string poolVowel : vowelPool)
             {
-                ShortVowelPool.push_back(poolVowel);
-            } else if( poolVowel.size() == vowel.size() && vowel.size() == 1)
-            {
+                //if the vowel is only 1 char just replace the char
+                if(poolVowel.size() <= vowel.size())
+                {
+                    ShortVowelPool.push_back(poolVowel);
+                } else if( poolVowel.size() >= vowel.size() && vowel.size() == 1)
+                {
                 //figure out how to handle if all the pool and the vowels are one char
+                }
             }
         }
+
+        //find the index of the vowel in the word and replace it with a random one from the vowel pool.
+        std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size() - 1);
+        std::string selectedVowel = vowels[distVowel(LangSeed::rng)];
+        size_t indexOfVowel = value.find(selectedVowel);
+
+        std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  ShortVowelPool.size() -1);
+
+        std::string tempVal = value.replace(indexOfVowel, selectedVowel.size(), ShortVowelPool[distVowelPool(LangSeed::rng)]);
+        return Word(tempVal, meaning, vowels); 
     }
-
-    //find the index of the vowel in the word and replace it with a random one from the vowel pool.
-    std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size());
-    std::string selectedVowel = vowels[distVowel(gen)];
-    size_t indexOfVowel = value.find(selectedVowel);
-
-    std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  ShortVowelPool.size());
-
-    std::string tempVal = value.erase(indexOfVowel, selectedVowel.size()).insert(indexOfVowel + 1, ShortVowelPool[distVowelPool(gen)]);
-    return Word(tempVal, meaning, vowels);
+    
 }
 
 Word Word::DeleteVowel()
 {
-    std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size());
-    std::string selectedVowel = vowels[distVowel(gen)];
+    std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  (vowels.size()-1));
+    std::string selectedVowel = vowels[distVowel(LangSeed::rng)];
     size_t indexOfVowel = value.find(selectedVowel);
 
     std::string tempVal = value.erase(indexOfVowel, selectedVowel.size());
@@ -100,9 +109,9 @@ Word Word::DeleteVowel()
 
 Word Word::AddSuffix(std::vector<std::string> suffixPool)
 {
-    std::uniform_int_distribution<uint_least32_t> distSuffix = WRandGen::distribute( 0,  suffixPool.size());
+    std::uniform_int_distribution<uint_least32_t> distSuffix = WRandGen::distribute( 0,  (suffixPool.size() -1));
 
-    std::string selectedSuffix = suffixPool[distSuffix(gen)];
+    std::string selectedSuffix = suffixPool[distSuffix(LangSeed::rng)];
     std::string tempVal = value + selectedSuffix;
 
     return Word(tempVal, meaning, vowels);
@@ -113,7 +122,7 @@ Word Word::AddPreffix(std::vector<std::string> preffixPool)
 {
     std::uniform_int_distribution<uint_least32_t> distPreffix = WRandGen::distribute( 0,  preffixPool.size());
 
-    std::string selectedPreffix = preffixPool[distPreffix(gen)];
+    std::string selectedPreffix = preffixPool[distPreffix(LangSeed::rng)];
     std::string tempVal = selectedPreffix + value;
     
     return Word(tempVal, meaning, vowels);
@@ -129,7 +138,12 @@ void Word::Kill()
 }
 
 Word Word::Shrink(int start, int end)
-{
+{   
+    if(start - end == 0)
+    {
+        Word word = *this;
+        return word;
+    }
     std::string tempVal = value.substr(start, start - end);
 
     return Word(tempVal, meaning, vowels);
@@ -138,8 +152,12 @@ Word Word::Shrink(int start, int end)
 //idk how to set up MIX yet, I don't know what I want the mixed word to look like yet
 Word Word::Mix(int start, int end, int otherWordStart, int otherWordEnd, Word otherWord)
 {
-    std::string tempVal = value.erase(start, start - end).insert(start + 1, otherWord.getValue().substr(otherWordStart, otherWordStart - otherWordEnd));
-
+    if(start - end == 0)
+    {
+        Word word = *this;
+        return word;
+    }
+    std::string tempVal = value.replace(start, end - start, otherWord.getValue().substr(otherWordStart, otherWordEnd - otherWordStart));
     return Word(tempVal, meaning, vowels);
 
 }
@@ -152,7 +170,7 @@ Word Word::Negate(std::vector<std::string> negatePool)
 
     std::uniform_int_distribution<uint_least32_t> distNegate = WRandGen::distribute( 0,  negatePool.size());
 
-    std::string selectedNegation =negatePool[distNegate(gen)];
+    std::string selectedNegation = negatePool[distNegate(LangSeed::rng)];
     std::string tempVal = selectedNegation + value;
 
     std::string tempMeaning = "the opposite of " + meaning;
@@ -161,10 +179,15 @@ Word Word::Negate(std::vector<std::string> negatePool)
 
 }
 
-Word Word::Subsitute(int start, int end, Word otherWord)
-{
-    std::string tempVal = value.erase(start, start - end).insert(start + 1, otherWord.getValue().substr(start, start - end));
-
+Word Word::Subsitute(int start, int end, Word otherWord, bool replace)
+{   
+    std::string tempVal;
+    if(replace)
+    {
+        tempVal = value.replace(start, end - start, otherWord.getValue());
+    }else{
+      tempVal = value.replace(start, end - start, otherWord.getValue().substr(start, end - start));  
+    }
     return Word(tempVal, meaning, vowels);
 }
 
@@ -179,7 +202,7 @@ Word Word::CreateNew(int size, bool structuredCreation)
         std::uniform_int_distribution<uint_least32_t> dist = WRandGen::distribute( 0,  DEFAULT_CHAR_SET_LENGTH - 1);
         for(int i = 0; i < size; i++)
         {
-            tempVal += DEFAULT_CHAR_SET[dist(gen)];
+            tempVal += DEFAULT_CHAR_SET[dist(LangSeed::rng)];
         }
 
         //create a random bit mask of the word to create where the vowels are
@@ -188,7 +211,7 @@ Word Word::CreateNew(int size, bool structuredCreation)
         std::uniform_int_distribution<uint_least32_t> maskDist = WRandGen::distribute( 0,  PERCENT_CHANCE_VOWEL - 1);
         for(auto character : tempVal)
         {
-            bitMask.push_back((maskDist(gen) < 1) ? 1 : 0);
+            bitMask.push_back((maskDist(LangSeed::rng) < 1) ? 1 : 0);
         }
 
         for(int i = 0; i < bitMask.size(); i++)
@@ -214,6 +237,7 @@ Word Word::CreateNew(int size, bool structuredCreation)
 
 Word Word::ClipEnd(int start)
 {
+   
     std::string tempVal = value.erase(start);
 
     return Word(tempVal, meaning, vowels);
@@ -229,7 +253,7 @@ Word Word::ClipFront(int end)
 Word Word::Compound(Word otherWord)
 {
     std::uniform_int_distribution<uint_least32_t> dist = WRandGen::distribute( 0,  1);
-    std::string tempVal = (dist(gen) > 1) ? otherWord.getValue() + value : value + otherWord.getValue();
+    std::string tempVal = (dist(LangSeed::rng) > 1) ? otherWord.getValue() + value : value + otherWord.getValue();
 
     return Word(tempVal, meaning, vowels);
 }
@@ -271,7 +295,7 @@ void Word::rebuildVowelList(std::vector<std::string> vowelList)
 {
     for(int i = 0; i < vowelList.size(); i++)
     {
-        std::size_t found=value.find(vowels[i]);
+        std::size_t found=value.find(vowelList[i]);
         if (found == std::string::npos){
             vowelList.erase(vowelList.begin() + i);
         }

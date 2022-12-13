@@ -3,13 +3,16 @@
 
 #include <string>
 #include <vector>
+#include<bits/stdc++.h>
 #include "Constants.h"
 #include  "WRandGen.hpp"
+#include "LangSeed.hpp"
 
 class Word {
 
     public:
         Word(std::string value, std::string meaning, std::vector<std::string> vowels);
+
 
         //check the equality of another word to this one
         bool Equal(Word otherWord);
@@ -39,7 +42,7 @@ class Word {
 
         Word Negate(std::vector<std::string> negatePool);
 
-        Word Subsitute(int start, int end, Word otherWord);
+        Word Subsitute(int start, int end, Word otherWord, bool replace);
 
         Word CreateNew(int size, bool structuredGeneration);
 
@@ -76,7 +79,7 @@ class Word {
         std::string baseWord;
 
         //random generator
-        std::mt19937 gen = WRandGen::generator();
+        //std::mt19937 gen = WRandGen::generator();
 
         //take out the vowels that are no longer in the word
         void rebuildVowelList(std::vector<std::string> vowelList);

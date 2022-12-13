@@ -1,0 +1,3 @@
+g++ -I /$(pwd)/pugixml-1.12 -Wall -g -std=c++17 *.cpp -o test
+
+./test -d1 ./InputDictionaries/InputDict1.xml -d2 ./InputDictionaries/InputDict2.xml  -d3 ./InputDictionaries/InputDict3.xml -d4 ./InputDictionaries/InputDict4.xml -d5 ./InputDictionaries/InputDict1.xml -g 5 -s 100

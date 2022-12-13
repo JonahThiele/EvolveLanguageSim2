@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         "\n -g = generations" << 
         "\n -s = amount of speakers" << 
         "\n -d[1-5] = xml initial dictionaries" <<
-        "\n NOTE: d1-d3 are required for a basic model to run";
+        "\n NOTE: d1-d3 are required for a basic model to run\n";
     }
 
     char * generations = getCmdOption(argv, argv + argc, "-g");

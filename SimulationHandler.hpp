@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "DictionaryLoader.hpp"
 #include "WRandGen.hpp"
+#include "LangSeed.hpp"
 #include <vector>
 #include <random>
 #include <cctype>

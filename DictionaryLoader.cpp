@@ -1,8 +1,11 @@
 #include "DictionaryLoader.hpp"
+#include <iostream>
 
-DictionaryLoader::DictionaryLoader(std::string dictionaryFile)
+void DictionaryLoader::InputDictionary(std::string dictionaryFile)
 {
     pugi::xml_document inputDictionary;
+
+    dictionary.clear();
 
     //add ability to change input of this file
     inputDictionary.load_file(dictionaryFile.c_str());
@@ -19,30 +22,33 @@ DictionaryLoader::DictionaryLoader(std::string dictionaryFile)
 
         for (pugi::xml_node wordValues = word.first_child(); wordValues; wordValues = wordValues.next_sibling())
         {
-            if(wordValues.name() == XML_WORD_MEANING)
+            std::string name = wordValues.name();
+            if(name == XML_WORD_MEANING)
             {
                 //handle for wchar mode, does that even make sense bc I'm not using the Win API?
                 tempMeaning = wordValues.text().as_string();
 
-            } else if( wordValues.name() == XML_WORD_STR)
+            } else if( name == XML_WORD_STR)
             {
                 tempValue = wordValues.text().as_string();
 
-            } else if( wordValues.name() == XML_WORD_VOWELS)
+            } else if( name == XML_WORD_VOWELS)
             {
 
             // figure out stringing the string based on the ,'s found in the string
 
-                std::string tempCommaSeperatedStr = wordValues.text().as_string();
-                std::regex regexz("[^,]+ ");
-                std::sregex_token_iterator start(tempCommaSeperatedStr.begin(), tempCommaSeperatedStr.end(), regexz, -1);
-                std::sregex_token_iterator end;
-
-                tempVowels.insert(tempVowels.begin(), start, end);
+                std::stringstream sstr(wordValues.text().as_string());
+                while(sstr.good())
+                {
+                    std::string substr;
+                    getline(sstr, substr, ',');
+                    tempVowels.push_back(substr);
+                }
                 
             } else 
             {
                 // write some error that handles a poorly written xml file
+                
             }
         }
 
@@ -51,7 +57,7 @@ DictionaryLoader::DictionaryLoader(std::string dictionaryFile)
     }
 }
 
-void DictionaryLoader::OutputDictionary()
+void DictionaryLoader::OutputDictionary(std::vector<Word> Speakerdictionary)
 {
     //figure out how to add header for xml that states version, etc
 
@@ -59,7 +65,7 @@ void DictionaryLoader::OutputDictionary()
 
     pugi::xml_node DictionaryNode = outputDictionary.append_child("Dictionary");
 
-    for(Word word : dictionary)
+    for(Word word : Speakerdictionary)
     {
         //add every word in the dictionary as a node
         pugi::xml_node dictionaryWord = DictionaryNode.append_child("Word");
@@ -73,10 +79,10 @@ void DictionaryLoader::OutputDictionary()
         //concatenate the vector of strings to a string to set in the xml
         std::string xmlStr;
         for (const auto &vowel : word.getVowels()) xmlStr += vowel;
-        wordValue.append_child(pugi::node_pcdata).set_value(word.getValue().c_str());
+        wordVowels.append_child(pugi::node_pcdata).set_value(xmlStr.c_str());
 
         pugi::xml_node wordMeaning = dictionaryWord.append_child("Meaning");
-        wordValue.append_child(pugi::node_pcdata).set_value(word.getMeaning().c_str());
+        wordMeaning.append_child(pugi::node_pcdata).set_value(word.getMeaning().c_str());
 
     }
     
