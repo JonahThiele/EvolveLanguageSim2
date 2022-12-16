@@ -21,3 +21,6 @@
 
 #define DEFAULT_NEW_WORD_SIZE_MAX 12
 #define DEFAULT_NEW_WORD_SIZE_MIN 6
+
+//20% of the word can be vowels
+#define NEW_VOWELS_PRECENT_OF_WORD .2

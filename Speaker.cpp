@@ -195,14 +195,19 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     {
                     // shrink
                     //generate start and stop ints 
-                    std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
-                    int start = distStart(LangSeed::rng);
+                    //check if work is less than 3 chars else return the normal word
+                    if(dictionary[i].getValue().size() < 3)
+                    {
+                        std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
+                        int start = distStart(LangSeed::rng);
 
-                    std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().size() - 1);
-                    int end = distEnd(LangSeed::rng);
+                        std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().size() - 1);
+                        int end = distEnd(LangSeed::rng);
 
-                    Word sharedWord = dictionary[i].Shrink(start, end);
-                    sharedDictionary.push_back(sharedWord);
+                        Word sharedWord = dictionary[i].Shrink(start, end);
+                        sharedDictionary.push_back(sharedWord);
+                    }
+                    sharedDictionary.push_back(dictionary[i]);
                     }
                     break;
             
@@ -423,9 +428,9 @@ void Speaker::learnWords(std::vector<Word> sharedWords)
     {
         for(int b = 0; b < sharedWords.size(); b++)
         {
-            if(dictionary[i].Equal(sharedWords[b]))
+            if(dictionary[i].Equal(sharedWords[b]) || !sharedWords[b].isDummyWord())
             {
-                b--;
+                //b--;
                 std::cout << "Equal\n";
                 sharedWords.erase(sharedWords.begin() + b);
                 continue;

@@ -21,8 +21,8 @@ bool Word::Equal(Word otherWord)
 
 bool Word::isDummyWord()
 {
-    std::string IgnoreList[2] = {"KILL", "DEFAULT"};
-    for(int i = 0; i < 2; i++)
+    std::string IgnoreList[4] = {"KILL", "DEFAULT", "", " "};
+    for(int i = 0; i < 4; i++)
     {
         if(value == IgnoreList[i] || meaning == IgnoreList[i] || vowels[0] == IgnoreList[i])
         {
@@ -298,6 +298,22 @@ void Word::rebuildVowelList(std::vector<std::string> vowelList)
         std::size_t found=value.find(vowelList[i]);
         if (found == std::string::npos){
             vowelList.erase(vowelList.begin() + i);
+        }
+    }
+
+    if(vowelList.size() < 1)
+    {
+        std::uniform_int_distribution<uint_least32_t> charDist = WRandGen::distribute( 1, std::ceil((float)((vowelList.size() -1) * NEW_VOWELS_PRECENT_OF_WORD)));
+        
+        for(int charIndex = 0; charDist(LangSeed::rng); charIndex++)
+        {
+            std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(0, value.size() - 1 );
+            std::string vowel = value.substr(charPick(LangSeed::rng), 1);
+            std::size_t found=value.find(vowel);
+            if(!(found == std::string::npos))
+            {
+                vowelList.push_back(vowel);
+            }
         }
     }
     vowels = vowelList;

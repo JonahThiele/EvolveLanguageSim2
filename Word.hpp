@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include<bits/stdc++.h>
+#include <cmath>
 #include "Constants.h"
 #include  "WRandGen.hpp"
 #include "LangSeed.hpp"
