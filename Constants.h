@@ -24,3 +24,4 @@
 
 //20% of the word can be vowels
 #define NEW_VOWELS_PRECENT_OF_WORD .2
+#define STATIC_AMOUNT_OF_VOWELS 4

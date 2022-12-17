@@ -319,16 +319,25 @@ void Word::rebuildVowelList(std::vector<std::string> vowelList)
 
     if(vowelList.size() < 1)
     {
-        std::uniform_int_distribution<uint_least32_t> charDist = WRandGen::distribute( 1, (int)std::ceil((float)((value.size() -1) * NEW_VOWELS_PRECENT_OF_WORD)));
+        //replace with a max of 4 vowels repeats will be removed anyway
+        //(int)std::ceil((float)((value.size() -1) * NEW_VOWELS_PRECENT_OF_WORD))
+        std::uniform_int_distribution<uint_least32_t> charDist = WRandGen::distribute( 1, STATIC_AMOUNT_OF_VOWELS);
+        int vowelAmount = charDist(LangSeed::rng);
         
-        for(int charIndex = 0; charIndex < charDist(LangSeed::rng); charIndex++)
+        for(int charIndex = 0; charIndex < vowelAmount; charIndex++)
         {
-            std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(0, value.size() - 1 );
-            std::string strVowel = value.substr(charPick(LangSeed::rng), 1);
-            std::size_t found=value.find(strVowel);
-            vowelList.push_back(strVowel);
-            std::cout << "adding new vowels\n";
+            if(value.size() > 2)
+            {
+                std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(0, value.size() - 2 );
+                int index = charPick(LangSeed::rng);
+                std::string strVowel = this->value.substr(index, 1);
+                vowelList.push_back(strVowel);
+            }else {
+                std::string strVowel = value.substr(0, 1);
+                vowelList.push_back(strVowel);
+            }
+   
         }
     }
-     this->vowels = vowelList;
+    this->vowels = vowelList;
 }
