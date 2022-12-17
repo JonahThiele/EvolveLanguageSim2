@@ -37,18 +37,23 @@ for i in range(0, args.AmountOfWords):
         #select 2 char vowel or make 1 vowel
         vowel = rd.choice(word)
         index = rd.randint(0,2)
-        if(index == 1):
+        if(index == 0):
             if(word.index(vowel) < len(word) - 1):
                 vowel +=  word[word.index(vowel) + 1]
-        elif(index == 2):
+        elif(index == 1):
             if(word.index(vowel) > 0):
                 vowel =  word[word.index(vowel) - 1] + vowel
+        
 
+        #ATTENTION this hack is suspicious because the script has ocassional errors when the
         #if the vowel is already in the list delete it
-        vowelList = vowelList.replace(vowel+',', "") 
+        #vowelList = vowelList.replace(vowel+',', "") 
         vowelList += (vowel + ",")
+    #remove redundant vowels
     #remove ending comma
     vowelList = vowelList[:-1]
+    words = vowelList.split(',')
+    vowelList = ",".join(sorted(set(words), key=words.index))
     #get the meaning
     meaning = r.get_random_word()
       

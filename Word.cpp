@@ -92,7 +92,8 @@ Word Word::ShortenVowel(std::vector<std::string> vowelPool)
         std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  ShortVowelPool.size() -1);
 
         std::string tempVal = value.replace(indexOfVowel, selectedVowel.size(), ShortVowelPool[distVowelPool(LangSeed::rng)]);
-        return Word(tempVal, meaning, vowels); 
+        
+        return Word(tempVal, this->meaning, this->vowels); 
     }
     
 }
@@ -293,28 +294,41 @@ Word Word::OppositeMeaning()
 
 void Word::rebuildVowelList(std::vector<std::string> vowelList)
 {
-    for(int i = 0; i < vowelList.size(); i++)
+    /*for(int i = 0; i < vowelList.size(); i++)
     {
         std::size_t found=value.find(vowelList[i]);
         if (found == std::string::npos){
             vowelList.erase(vowelList.begin() + i);
+            std::cout << "not in List\n"; 
+        }
+    }*/
+
+    auto i = std::begin(vowelList);
+    while( i != std::end(vowelList))
+    {
+        //convert iterator into index to grab correct value
+        std::size_t found=value.find(vowelList[std::distance(vowelList.begin(), i)]);
+        if(found == std::string::npos)
+        {
+            i = vowelList.erase(i);
+        } else 
+        {
+            ++i;
         }
     }
 
     if(vowelList.size() < 1)
     {
-        std::uniform_int_distribution<uint_least32_t> charDist = WRandGen::distribute( 1, std::ceil((float)((vowelList.size() -1) * NEW_VOWELS_PRECENT_OF_WORD)));
+        std::uniform_int_distribution<uint_least32_t> charDist = WRandGen::distribute( 1, (int)std::ceil((float)((value.size() -1) * NEW_VOWELS_PRECENT_OF_WORD)));
         
-        for(int charIndex = 0; charDist(LangSeed::rng); charIndex++)
+        for(int charIndex = 0; charIndex < charDist(LangSeed::rng); charIndex++)
         {
             std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(0, value.size() - 1 );
-            std::string vowel = value.substr(charPick(LangSeed::rng), 1);
-            std::size_t found=value.find(vowel);
-            if(!(found == std::string::npos))
-            {
-                vowelList.push_back(vowel);
-            }
+            std::string strVowel = value.substr(charPick(LangSeed::rng), 1);
+            std::size_t found=value.find(strVowel);
+            vowelList.push_back(strVowel);
+            std::cout << "adding new vowels\n";
         }
     }
-    vowels = vowelList;
+     this->vowels = vowelList;
 }

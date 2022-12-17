@@ -85,7 +85,9 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
             // seed for the random different mutation methods ( 13 are currently defined )
             std::uniform_int_distribution<uint_least32_t> distWhichMutation( 0,  13); 
 
-            switch(distWhichMutation(LangSeed::rng) )
+            //for debugging purposes I will be replacing this with a magic number
+            //distWhichMutation(LangSeed::rng)
+            switch(1)
             {
                 case 0:
                     {
@@ -206,8 +208,13 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                         Word sharedWord = dictionary[i].Shrink(start, end);
                         sharedDictionary.push_back(sharedWord);
+                    }else 
+                    {   
+                        //create a new word
+                        Word sameWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
+                        sharedDictionary.push_back(dictionary[i]);
                     }
-                    sharedDictionary.push_back(dictionary[i]);
+        
                     }
                     break;
             
