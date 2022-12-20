@@ -83,7 +83,7 @@ class Word {
         //std::mt19937 gen = WRandGen::generator();
 
         //take out the vowels that are no longer in the word
-        void rebuildVowelList(std::vector<std::string> vowelList);
+        std::vector<std::string> rebuildVowelList(std::vector<std::string> vowelList);
 
 };
 

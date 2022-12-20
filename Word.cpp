@@ -1,11 +1,10 @@
 #include "Word.hpp"
 
-Word::Word(std::string value, std::string meaning, std::vector<std::string> vowels)
+Word::Word(std::string value, std::string meaning, std::vector<std::string> InVowels)
 {
     this->value = value;
     this->meaning = meaning;
-    this->vowels = vowels;
-    rebuildVowelList(vowels);
+    this->vowels = rebuildVowelList(InVowels);
 }
 
 
@@ -79,7 +78,7 @@ Word Word::ShortenVowel(std::vector<std::string> vowelPool)
                     ShortVowelPool.push_back(poolVowel);
                 } else if( poolVowel.size() >= vowel.size() && vowel.size() == 1)
                 {
-                //figure out how to handle if all the pool and the vowels are one char
+                //figure out how to handle if all the pool and the vowels are 2 char
                 }
             }
         }
@@ -292,7 +291,7 @@ Word Word::OppositeMeaning()
 
 }
 
-void Word::rebuildVowelList(std::vector<std::string> vowelList)
+std::vector<std::string> Word::rebuildVowelList(std::vector<std::string> vowelList)
 {
     /*for(int i = 0; i < vowelList.size(); i++)
     {
@@ -339,5 +338,5 @@ void Word::rebuildVowelList(std::vector<std::string> vowelList)
    
         }
     }
-    this->vowels = vowelList;
+    return vowelList;
 }

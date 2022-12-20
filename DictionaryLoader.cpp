@@ -78,7 +78,7 @@ void DictionaryLoader::OutputDictionary(std::vector<Word> Speakerdictionary)
 
         //concatenate the vector of strings to a string to set in the xml
         std::string xmlStr;
-        for (const auto &vowel : word.getVowels()) xmlStr += vowel;
+        for (const auto &vowel : word.getVowels()) xmlStr += (vowel + ",");
         wordVowels.append_child(pugi::node_pcdata).set_value(xmlStr.c_str());
 
         pugi::xml_node wordMeaning = dictionaryWord.append_child("Meaning");
