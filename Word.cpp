@@ -63,9 +63,9 @@ Word Word::LengthenVowel(std::vector<std::string> vowelPool)
 Word Word::ShortenVowel(std::vector<std::string> vowelPool)
 {
     //check if the word is only one char
-    if(this->value.size() < 2)
+    if(value.size() < 2)
     {
-        return Word(this->value, this->meaning, this->vowels); 
+        return Word(value, meaning, vowels); 
     } else {
        std::vector<std::string> ShortVowelPool;
         for( std::string vowel : vowels)
@@ -89,10 +89,10 @@ Word Word::ShortenVowel(std::vector<std::string> vowelPool)
         size_t indexOfVowel = value.find(selectedVowel);
 
         std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  ShortVowelPool.size() -1);
-
+        
         std::string tempVal = value.replace(indexOfVowel, selectedVowel.size(), ShortVowelPool[distVowelPool(LangSeed::rng)]);
         
-        return Word(tempVal, this->meaning, this->vowels); 
+        return Word(tempVal, meaning, vowels); 
     }
     
 }
@@ -291,32 +291,25 @@ Word Word::OppositeMeaning()
 
 }
 
-std::vector<std::string> Word::rebuildVowelList(std::vector<std::string> vowelList)
+std::vector<std::string> Word::rebuildVowelList(std::vector<std::string> inVowelList)
 {
-    /*for(int i = 0; i < vowelList.size(); i++)
-    {
-        std::size_t found=value.find(vowelList[i]);
-        if (found == std::string::npos){
-            vowelList.erase(vowelList.begin() + i);
-            std::cout << "not in List\n"; 
-        }
-    }*/
+    std::vector<std::string> rebuiltVowelList = inVowelList;
 
-    auto i = std::begin(vowelList);
-    while( i != std::end(vowelList))
+    auto i = std::begin(rebuiltVowelList);
+    while( i != std::end(rebuiltVowelList))
     {
         //convert iterator into index to grab correct value
-        std::size_t found=value.find(vowelList[std::distance(vowelList.begin(), i)]);
+        std::size_t found=value.find(rebuiltVowelList[std::distance(rebuiltVowelList.begin(), i)]);
         if(found == std::string::npos)
         {
-            i = vowelList.erase(i);
+            i = rebuiltVowelList.erase(i);
         } else 
         {
             ++i;
         }
     }
 
-    if(vowelList.size() < 1)
+    if(rebuiltVowelList.size() < 1)
     {
         //replace with a max of 4 vowels repeats will be removed anyway
         //(int)std::ceil((float)((value.size() -1) * NEW_VOWELS_PRECENT_OF_WORD))
@@ -327,16 +320,17 @@ std::vector<std::string> Word::rebuildVowelList(std::vector<std::string> vowelLi
         {
             if(value.size() > 2)
             {
-                std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(0, value.size() - 2 );
+                std::uniform_int_distribution<uint_least32_t> charPick = WRandGen::distribute(1, value.size() - 2 );
                 int index = charPick(LangSeed::rng);
                 std::string strVowel = this->value.substr(index, 1);
-                vowelList.push_back(strVowel);
+                rebuiltVowelList.push_back(strVowel);
             }else {
                 std::string strVowel = value.substr(0, 1);
-                vowelList.push_back(strVowel);
+                rebuiltVowelList.push_back(strVowel);
             }
+            
    
         }
     }
-    return vowelList;
+    return rebuiltVowelList;
 }

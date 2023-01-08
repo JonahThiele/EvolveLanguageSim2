@@ -113,6 +113,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
             
                 case 1:
                     {
+                    
                     //shorten the vowels 
                     std::vector<std::string> vowelList = {};
                     //grab the vowel pool from the dictionary
@@ -438,7 +439,6 @@ void Speaker::learnWords(std::vector<Word> sharedWords)
             if(dictionary[i].Equal(sharedWords[b]) || !sharedWords[b].isDummyWord())
             {
                 //b--;
-                std::cout << "Equal\n";
                 sharedWords.erase(sharedWords.begin() + b);
                 continue;
             }

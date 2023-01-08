@@ -85,6 +85,9 @@ class Word {
         //take out the vowels that are no longer in the word
         std::vector<std::string> rebuildVowelList(std::vector<std::string> vowelList);
 
+        //flags for debugging
+        bool Rand_added_vowels = false;
+
 };
 
 #endif 
