@@ -56,6 +56,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
     if(this->compare(otherPerson))
     {
         return sharedDictionary; 
+        std::cout << "returning nothing\n";
     }
 
     //set the percent shared with the other speaker
@@ -420,6 +421,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
             }
 
         } else {
+            //just return normal
             sharedDictionary.push_back(dictionary[i]);
         }
     }
