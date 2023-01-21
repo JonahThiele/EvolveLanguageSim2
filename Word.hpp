@@ -21,11 +21,15 @@ class Word {
         bool isDummyWord() const;
 
 
-        //getter methods
-        std::string getMeaning() const {return meaning;}
-        std::string getValue() const {return value;}
-        std::string getBaseWord() const {return baseWord;}
-        std::vector<std::string> getVowels() const {return vowels;}
+        //getter methods one copy for const and other for local current object
+        const std::string& getMeaning() const {return meaning;}
+        std::string getMeaning() {return meaning;}
+        const std::string& getValue() const {return value;}
+        std::string getValue() {return value;}
+        const std::string& getBaseWord() const {return baseWord;}
+        std::string getBaseWord() {return baseWord;}
+        const std::vector<std::string>& getVowels() const {return vowels;}
+        std::vector<std::string> getVowels() {return vowels;}
 
         //Lexicology mutation methods (change the spelling of the words)
         Word LengthenVowel(const std::vector<std::string> &vowelPool) const;
@@ -41,7 +45,7 @@ class Word {
 
         Word Negate(const std::vector<std::string> &negatePool) const;
 
-        Word Subsitute(int start, int end, const Word &otherWord, bool replace) const;
+        Word Subsitute(int start, int end, Word &otherWord, bool replace) const;
 
         Word CreateNew(int size, bool structuredGeneration) const;
 
@@ -72,10 +76,10 @@ class Word {
 
     private:
 
-        std::string meaning;
-        std::string value;
-        std::vector<std::string> vowels;
-        std::string baseWord;
+        mutable std::string meaning;
+        mutable std::string value;
+        mutable std::vector<std::string> vowels;
+        mutable std::string baseWord;
 
         //random generator
         //std::mt19937 gen = WRandGen::generator();

@@ -56,14 +56,14 @@ Word Word::LengthenVowel(const std::vector<std::string> &vowelPool) const
     //create a copy of the vowel dictionary to call find on ?
     std::vector<std::string> tempVowels = vowels;
     std::uniform_int_distribution<uint_least32_t> distVowel = WRandGen::distribute( 0,  vowels.size()-1);
-    std::vector<std::string>::iterator it = std::find(tempVowels.begin(), tempVowels.end(), tempVowels[distVowel(LangSeed::rng)]);
-    int indexOfVowel = it - vowels.begin();
+    std::string selectedVowel = vowels[distVowel(LangSeed::rng)];
+    size_t indexOfVowel = value.find(selectedVowel);
 
     std::uniform_int_distribution<uint_least32_t> distVowelPool = WRandGen::distribute( 0,  LongVowelPool.size() -1);
 
     std::string copyVal = value;
 
-    std::string tempVal = copyVal.erase(indexOfVowel, 1).insert(indexOfVowel, LongVowelPool[distVowelPool(LangSeed::rng)]);
+    std::string tempVal = copyVal.replace(indexOfVowel, selectedVowel.size(), LongVowelPool[distVowelPool(LangSeed::rng)]);;
     return Word(tempVal, meaning, vowels);
 }
 
@@ -179,14 +179,17 @@ Word Word::Negate(const std::vector<std::string> &negatePool) const
     return Word(tempVal, tempMeaning, vowels);
 
 }
-
-Word Word::Subsitute(int start, int end, const Word &otherWord, bool replace) const
+//don't pass by const because it causes a const nightmare I will have to look into
+//this more later
+Word Word::Subsitute(int start, int end, Word &otherWord, bool replace) const
 {   
-    std::string tempVal;
+    std::string tempVal = "";
     std::string copyVal = value;
+    //std::cout << otherWord.getValue() << "\n";
     if(replace)
     {
         tempVal = copyVal.replace(start, end - start, otherWord.getValue());
+        std::cout << "tempValue:" << tempVal << "\n";
     }else{
       tempVal = copyVal.replace(start, end - start, otherWord.getValue().substr(start, end - start));  
     }

@@ -1,29 +1,14 @@
 <?xml version="1.0"?>
 <Dictionary>
 	<Word>
-		<Value>Muqj</Value>
-		<Vowels>u,uq,M,</Vowels>
-		<Meaning>pettah</Meaning>
+		<Value>gkuhbla</Value>
+		<Vowels>la,hb,</Vowels>
+		<Meaning>scouth</Meaning>
 	</Word>
 	<Word>
-		<Value>cHocqefAfuUBDl</Value>
-		<Vowels>oc,ef,fA,</Vowels>
-		<Meaning>aydendron</Meaning>
-	</Word>
-	<Word>
-		<Value>G</Value>
-		<Vowels>G,</Vowels>
-		<Meaning>pacificistically</Meaning>
-	</Word>
-	<Word>
-		<Value>suLl</Value>
-		<Vowels>uL,</Vowels>
-		<Meaning>protectorless</Meaning>
-	</Word>
-	<Word>
-		<Value>fKsjfOQHtFRUhNm</Value>
-		<Vowels>s,QH,tF,Nm,</Vowels>
-		<Meaning>lecanomantic</Meaning>
+		<Value>mPtev</Value>
+		<Vowels>v,t,m,</Vowels>
+		<Meaning>urdy</Meaning>
 	</Word>
 	<Word>
 		<Value>FgAySjdk</Value>
@@ -31,54 +16,14 @@
 		<Meaning>gangion</Meaning>
 	</Word>
 	<Word>
-		<Value>TqDY</Value>
-		<Vowels>D,</Vowels>
-		<Meaning>assibilation</Meaning>
-	</Word>
-	<Word>
-		<Value>PJXceIebtF</Value>
-		<Vowels>X,eI,ce,</Vowels>
-		<Meaning>elderbrotherly</Meaning>
-	</Word>
-	<Word>
-		<Value>gkuhbla</Value>
-		<Vowels>la,hb,</Vowels>
-		<Meaning>scouth</Meaning>
-	</Word>
-	<Word>
 		<Value>nprmgLLngu</Value>
 		<Vowels>mg,u,n,</Vowels>
 		<Meaning>nonaddictive</Meaning>
 	</Word>
 	<Word>
-		<Value>qGPW</Value>
-		<Vowels>q,PW,GP,</Vowels>
-		<Meaning>mammonization</Meaning>
-	</Word>
-	<Word>
-		<Value>gugQy</Value>
-		<Vowels>y,ug,u,</Vowels>
-		<Meaning>transitman</Meaning>
-	</Word>
-	<Word>
-		<Value>UWYXToOpgIjOVC</Value>
-		<Vowels>jO,</Vowels>
-		<Meaning>hexaped</Meaning>
-	</Word>
-	<Word>
-		<Value>VbFNWKKnSAALrtR</Value>
-		<Vowels>r,L,FN,AL,</Vowels>
-		<Meaning>marcando</Meaning>
-	</Word>
-	<Word>
-		<Value>dUrYCRbE</Value>
-		<Vowels>Rb,rY,</Vowels>
-		<Meaning>tirribi</Meaning>
-	</Word>
-	<Word>
-		<Value>SEwYm</Value>
-		<Vowels>wY,w,E,</Vowels>
-		<Meaning>etacism</Meaning>
+		<Value>KCtyDOl</Value>
+		<Vowels>DO,</Vowels>
+		<Meaning>natantly</Meaning>
 	</Word>
 	<Word>
 		<Value>RvG</Value>
@@ -91,13 +36,68 @@
 		<Meaning>inexplicability</Meaning>
 	</Word>
 	<Word>
-		<Value>KCtyDOl</Value>
-		<Vowels>DO,</Vowels>
-		<Meaning>natantly</Meaning>
+		<Value>qGPW</Value>
+		<Vowels>q,PW,GP,</Vowels>
+		<Meaning>mammonization</Meaning>
 	</Word>
 	<Word>
-		<Value>mPtev</Value>
-		<Vowels>v,t,m,</Vowels>
-		<Meaning>urdy</Meaning>
+		<Value>fKsjfOQHtFRUhNm</Value>
+		<Vowels>s,QH,tF,Nm,</Vowels>
+		<Meaning>lecanomantic</Meaning>
+	</Word>
+	<Word>
+		<Value>dUrYCRbE</Value>
+		<Vowels>Rb,rY,</Vowels>
+		<Meaning>tirribi</Meaning>
+	</Word>
+	<Word>
+		<Value>G</Value>
+		<Vowels>G,</Vowels>
+		<Meaning>pacificistically</Meaning>
+	</Word>
+	<Word>
+		<Value>suLl</Value>
+		<Vowels>uL,</Vowels>
+		<Meaning>protectorless</Meaning>
+	</Word>
+	<Word>
+		<Value>VbFNWKKnSAALrtR</Value>
+		<Vowels>r,L,FN,AL,</Vowels>
+		<Meaning>marcando</Meaning>
+	</Word>
+	<Word>
+		<Value>gugQy</Value>
+		<Vowels>y,ug,u,</Vowels>
+		<Meaning>transitman</Meaning>
+	</Word>
+	<Word>
+		<Value>SEwYm</Value>
+		<Vowels>wY,w,E,</Vowels>
+		<Meaning>etacism</Meaning>
+	</Word>
+	<Word>
+		<Value>Muqj</Value>
+		<Vowels>u,uq,M,</Vowels>
+		<Meaning>pettah</Meaning>
+	</Word>
+	<Word>
+		<Value>TqDY</Value>
+		<Vowels>D,</Vowels>
+		<Meaning>assibilation</Meaning>
+	</Word>
+	<Word>
+		<Value>cHocqefAfuUBDl</Value>
+		<Vowels>oc,ef,fA,</Vowels>
+		<Meaning>aydendron</Meaning>
+	</Word>
+	<Word>
+		<Value>PJXceIebtF</Value>
+		<Vowels>X,eI,ce,</Vowels>
+		<Meaning>elderbrotherly</Meaning>
+	</Word>
+	<Word>
+		<Value>UWYXToOpgIjOVC</Value>
+		<Vowels>jO,</Vowels>
+		<Meaning>hexaped</Meaning>
 	</Word>
 </Dictionary>

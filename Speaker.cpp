@@ -88,7 +88,9 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
             //for debugging purposes I will be replacing this with a magic number
             //distWhichMutation(LangSeed::rng)
-            switch(1)
+            int typeMutation = distWhichMutation(LangSeed::rng);
+            std::cout << typeMutation << '\n';
+            switch(typeMutation)
             {
                 case 0:
                     {
@@ -200,7 +202,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     // shrink
                     //generate start and stop ints 
                     //check if work is less than 3 chars else return the normal word
-                    if(dictionary[i].getValue().size() < 3)
+                    if(dictionary[i].getValue().size() >= 3)
                     {
                         std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().size() - 2);
                         int start = distStart(LangSeed::rng);
@@ -213,7 +215,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     }else 
                     {   
                         //create a new word
-                        Word sameWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
+                        //Word sameWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
                         sharedDictionary.push_back(dictionary[i]);
                     }
         
@@ -235,7 +237,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     Word otherWord = dictionary[distRandWord(LangSeed::rng)];
 
                     //skip if it is a single or double char character
-                    if(dictionary[i].getValue().length() < 3 || otherWord.getValue().length() < 3)
+                    if(dictionary[i].getValue().length() <= 3 || otherWord.getValue().length() <= 3)
                     {
                         sharedDictionary.push_back(dictionary[i]);
                     } else 
@@ -279,29 +281,37 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
             
                 case 9:
                     {
-                        //subsitute
-                        std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().length() - 2);
-                        int start = distStart(LangSeed::rng);
 
-                        std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i].getValue().length() - 1);
-                        int end = distEnd(LangSeed::rng);
-
-                        std::uniform_int_distribution<uint_least32_t> distRandWord( 0,  dictionary.size() - 1);
-                        Word otherWord = dictionary[distRandWord(LangSeed::rng)];
-
-                        bool lengthCheck = otherWord.getValue().length() < end;
-                        bool replaceFlag = false;
-                        while(lengthCheck)
+                        if(dictionary[i].getValue().length() >= 4)
                         {
-                            Word otherWord = dictionary[distRandWord(LangSeed::rng)];
-                            lengthCheck = otherWord.getValue().length() < (end - start);
-                            //turn on the replace whole word flag
-                            replaceFlag = true;
+                            //subsitute
+                            std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i].getValue().length() - 2);
+                            int start = distStart(LangSeed::rng);
 
+                            std::uniform_int_distribution<uint_least32_t> distEnd( start + 1,   dictionary[i].getValue().length() - 1);
+                            int end = distEnd(LangSeed::rng);
+
+                            std::vector<Word> sizedWords; 
+                            for(Word word : dictionary)
+                            {
+                                if(word.getValue().length() < end)
+                                {
+                                    sizedWords.push_back(word);
+                                }
+                            }
+
+                            bool replaceFlag = true;
+
+                            std::uniform_int_distribution<uint_least32_t> distOtherSelect( 0,  sizedWords.size() - 1);
+                            int otherWordIndex = distOtherSelect(LangSeed::rng);
+
+                            Word sharedWord = dictionary[i].Subsitute(start, end, sizedWords[otherWordIndex], replaceFlag);
+                            sharedDictionary.push_back(sharedWord);
+                        } else 
+                        {
+                            Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
+                            sharedDictionary.push_back(sharedWord);
                         }
-
-                        Word sharedWord = dictionary[i].Subsitute(start, end, otherWord, replaceFlag);
-                        sharedDictionary.push_back(sharedWord);
 
                     }
                     break;
