@@ -1,5 +1,7 @@
 #include "SimulationHandler.hpp"
 #include <iostream>
+#include <cstdio>
+#include <unistd.h>
 
 void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generations)
 {
@@ -39,13 +41,17 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     
     while(generations > 0)
     {
+        std::cout << "Gen:" << generations << "\n";
         for(int speaker1 = 0; speaker1 < SpeakerPopulation.size(); speaker1++)
         {
+            std::cout << "Person:" << speaker1 + 1 << "/" << SpeakerPopulation.size() << "\n";
+            fflush(stdout);
             for(int speaker2 = 0; speaker2 < SpeakerPopulation.size(); speaker2++)
             {
                 SpeakerPopulation[speaker2].learnWords(SpeakerPopulation[speaker1].speakToOtherPerson(SpeakerPopulation[speaker2]));
                 
             }
+            std::cout << "\r";
         }
 
         generations--;

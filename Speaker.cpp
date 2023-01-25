@@ -89,7 +89,6 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
             //for debugging purposes I will be replacing this with a magic number
             //distWhichMutation(LangSeed::rng)
             int typeMutation = distWhichMutation(LangSeed::rng);
-            std::cout << typeMutation << '\n';
             switch(typeMutation)
             {
                 case 0:
@@ -151,11 +150,15 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                     for(Word word : dictionary)
                     {
+                        //check if the word exists at all and is not empty before creating
                         //suffix should not be greater than 25% of the word
-                        std::uniform_int_distribution<uint_least32_t> distSuffix((int)(word.getValue().length() * 0.75), (int)(word.getValue().length() - 1));
-                        int lengthOfSuffix = distSuffix(LangSeed::rng);
-                        //the substr reads until the end of the string
-                        suffixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfSuffix));
+                        if(word.getValue().length())
+                        {
+                            std::uniform_int_distribution<uint_least32_t> distSuffix((int)(word.getValue().length() * 0.75), (int)(word.getValue().length() - 1));
+                            int lengthOfSuffix = distSuffix(LangSeed::rng);
+                            //the substr reads until the end of the string
+                            suffixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfSuffix));
+                        }
                     }
 
                     Word sharedWord = dictionary[i].AddSuffix(suffixList);
@@ -171,11 +174,16 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                     for(Word word : dictionary)
                     {
-                        //suffix should not be greater than 25% of the word                         
-                        std::uniform_int_distribution<uint_least32_t> distPrefix( 0,  (int)(word.getValue().length() * 0.25));
-                        int lengthOfPrefix = distPrefix(LangSeed::rng);
-                        //the substr reads until the end of the string
-                        prefixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfPrefix));
+                        if(word.getValue().length())
+                        {
+                            //suffix should not be greater than 25% of the word
+                            int bParam = ceil((int)(word.getValue().length() * 0.25));
+                            std::uniform_int_distribution<uint_least32_t> distPrefix( 0,  bParam);
+                            int lengthOfPrefix = distPrefix(LangSeed::rng);
+                            //the substr reads until the end of the string
+                            prefixList.push_back(word.getValue().substr(word.getValue().length() - lengthOfPrefix));
+                        }
+                       
                     }
 
                     Word sharedWord = dictionary[i].AddPreffix(prefixList);
@@ -294,7 +302,8 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                             std::vector<Word> sizedWords; 
                             for(Word word : dictionary)
                             {
-                                if(word.getValue().length() < end)
+                                //sets miniumum size for the word to be subbed in
+                                if(word.getValue().length() <= end && word.getValue().length() >= 1)
                                 {
                                     sizedWords.push_back(word);
                                 }
@@ -302,11 +311,15 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                             bool replaceFlag = true;
 
-                            std::uniform_int_distribution<uint_least32_t> distOtherSelect( 0,  sizedWords.size() - 1);
-                            int otherWordIndex = distOtherSelect(LangSeed::rng);
+                            if(sizedWords.size())
+                            {
+                                std::uniform_int_distribution<uint_least32_t> distOtherSelect( 0,  sizedWords.size() - 1);
+                                int otherWordIndex = distOtherSelect(LangSeed::rng);
 
-                            Word sharedWord = dictionary[i].Subsitute(start, end, sizedWords[otherWordIndex], replaceFlag);
-                            sharedDictionary.push_back(sharedWord);
+                                Word sharedWord = dictionary[i].Subsitute(start, end, sizedWords[otherWordIndex], replaceFlag);
+                                sharedDictionary.push_back(sharedWord); 
+                            }
+
                         } else 
                         {
                             Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
@@ -448,7 +461,7 @@ void Speaker::learnWords(std::vector<Word> sharedWords)
     {
         for(int b = 0; b < sharedWords.size(); b++)
         {
-            if(dictionary[i].Equal(sharedWords[b]) || !sharedWords[b].isDummyWord())
+            if(dictionary[i].Equal(sharedWords[b]) || sharedWords[b].isDummyWord())
             {
                 //b--;
                 sharedWords.erase(sharedWords.begin() + b);

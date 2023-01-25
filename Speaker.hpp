@@ -11,6 +11,7 @@
 #include <random>
 #include <cctype>
 #include <algorithm>
+#include <cmath>
 
 class Speaker {
     public:

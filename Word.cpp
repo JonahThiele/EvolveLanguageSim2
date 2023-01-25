@@ -5,10 +5,6 @@ Word::Word(const std::string &value, const std::string &meaning, const std::vect
     this->value = value;
     this->meaning = meaning;
     this->vowels = rebuildVowelList(InVowels);
-    std::cout << "Value:" << this->value << "\n";
-    for(auto const& i : this->vowels)
-        std::cout << i << ',';
-    std::cout << "\n";
 }
 
 bool Word::Equal(const Word &otherWord) const
@@ -26,7 +22,7 @@ bool Word::isDummyWord() const
     std::string IgnoreList[4] = {"KILL", "DEFAULT", "", " "};
     for(int i = 0; i < 4; i++)
     {
-        if(value == IgnoreList[i] || meaning == IgnoreList[i] || vowels[0] == IgnoreList[i])
+        if(value == IgnoreList[i] || meaning == IgnoreList[i])
         {
             return true;
         }
@@ -127,7 +123,7 @@ Word Word::AddSuffix(const std::vector<std::string> &suffixPool) const
 
 Word Word::AddPreffix(const std::vector<std::string> &preffixPool) const
 {
-    std::uniform_int_distribution<uint_least32_t> distPreffix = WRandGen::distribute( 0,  preffixPool.size());
+    std::uniform_int_distribution<uint_least32_t> distPreffix = WRandGen::distribute( 0,  preffixPool.size() - 1);
 
     std::string selectedPreffix = preffixPool[distPreffix(LangSeed::rng)];
     std::string tempVal = selectedPreffix + value;
@@ -169,7 +165,7 @@ Word Word::Negate(const std::vector<std::string> &negatePool) const
     //adding a negating prefix and changing the meaning to the opposite of the meaning
     //after a bit of research I will come back and fix this
 
-    std::uniform_int_distribution<uint_least32_t> distNegate = WRandGen::distribute( 0,  negatePool.size());
+    std::uniform_int_distribution<uint_least32_t> distNegate = WRandGen::distribute( 0,  negatePool.size() - 1);
 
     std::string selectedNegation = negatePool[distNegate(LangSeed::rng)];
     std::string tempVal = selectedNegation + value;
@@ -185,11 +181,12 @@ Word Word::Subsitute(int start, int end, Word &otherWord, bool replace) const
 {   
     std::string tempVal = "";
     std::string copyVal = value;
-    //std::cout << otherWord.getValue() << "\n";
+   
     if(replace)
     {
-        tempVal = copyVal.replace(start, end - start, otherWord.getValue());
-        std::cout << "tempValue:" << tempVal << "\n";
+        std::string val = otherWord.getValue();
+        tempVal = copyVal.replace(start, end - start, val);
+      
     }else{
       tempVal = copyVal.replace(start, end - start, otherWord.getValue().substr(start, end - start));  
     }
