@@ -1,14 +1,23 @@
 #include <string>
 #include <vector>
 #include "Speaker.hpp"
+#include "Word.hpp"
 
 class Barbarian{
     public:
         //presserve the language and don't modify, can't speak to other barbarians.
-        Barbarian();
+        Barbarian(std::vector<Word> dictionary, int x, int y);
 
-        bool Murder(std::vector<Speaker> &speakerList);
+        void Murder(std::vector<Speaker> &speakerList);
 
-        std::vector<std::string> Speak();
+        std::vector<Word> Speak();
+    
+    private:
+
+        int x;
+
+        int y;
+
+        std::vector<Word> dictionary;
 
 };

@@ -43,3 +43,6 @@
 #define MAX_AGE 3
 
 #define ISOLATION_TAG 1
+
+#define KILL_ZONE 30
+#define BARBS_ON false

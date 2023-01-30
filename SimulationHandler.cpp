@@ -52,6 +52,10 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     
     while(generations > 0)
     {
+        if(BARBS_ON)
+        {
+            
+        }
         std::cout << "Gen:" << generations << "\n";
         for(int speaker1 = 0; speaker1 < SpeakerPopulation.size(); speaker1++)
         {
