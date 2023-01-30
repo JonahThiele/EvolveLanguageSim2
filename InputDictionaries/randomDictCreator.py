@@ -66,6 +66,10 @@ for i in range(0, args.AmountOfWords):
     b2.text = vowelList
     b2 = gfg.SubElement(wordXml, "Meaning")
     b2.text = meaning
+    b2 = gfg.SubElement(wordXml, "BaseWord")
+    b2.text = word
+    b2 = gfg.SubElement(wordXml, "Prestige")
+    b2.text = rd.randint(0, 99)
    
 #tree = gfg.ElementTree(root)  
 

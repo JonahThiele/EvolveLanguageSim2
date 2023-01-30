@@ -6,9 +6,14 @@
 #include "DictionaryLoader.hpp"
 #include "WRandGen.hpp"
 #include "LangSeed.hpp"
+#include "MeaningLoader.hpp"
 #include <vector>
 #include <random>
 #include <cctype>
+#include <iostream>
+#include <cstdio>
+#include <unistd.h>
+
 
 
 class SimulationHandler {

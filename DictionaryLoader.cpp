@@ -19,6 +19,8 @@ void DictionaryLoader::InputDictionary(std::string dictionaryFile)
         std::vector<std::string> tempVowels;
         std::string tempMeaning;
         std::string tempValue;
+        std::string tempBaseWord;
+        int prestige;
 
         for (pugi::xml_node wordValues = word.first_child(); wordValues; wordValues = wordValues.next_sibling())
         {
@@ -32,7 +34,12 @@ void DictionaryLoader::InputDictionary(std::string dictionaryFile)
             {
                 tempValue = wordValues.text().as_string();
 
-            } else if( name == XML_WORD_VOWELS)
+            } else if(name == XML_WORD_BASE) {
+                tempBaseWord = wordValues.text().as_string();
+            } else if( name == XML_PRESTIGE)
+            {
+                prestige = wordValues.text().as_int();
+            }else if( name == XML_WORD_VOWELS)
             {
 
             // figure out stringing the string based on the ,'s found in the string
@@ -52,7 +59,7 @@ void DictionaryLoader::InputDictionary(std::string dictionaryFile)
             }
         }
 
-        Word newWord = Word(tempValue, tempMeaning, tempVowels);
+        Word newWord = Word(tempValue, tempMeaning, tempVowels, tempBaseWord, prestige);
         dictionary.push_back(newWord);
     }
 }

@@ -1,7 +1,8 @@
 #include "Speaker.hpp"
 
 
-Speaker::Speaker(int x, int y, std::vector<Word> dictionary)
+Speaker::Speaker(int x, int y, std::vector<Word> dictionary, int dictSize, MeaningLoader &meaningLoaderIn, int tag)
+: meaningLoader(meaningLoaderIn)
 {
     //makes sure the Speaker is within the bounds of the map
     if(x > MAX_X)
@@ -15,13 +16,30 @@ Speaker::Speaker(int x, int y, std::vector<Word> dictionary)
         //set y to NULL and throw assert
         this->y = NULL;
     }
+    
     this->x = x;
     this->y = y;
 
     this->dictionary = dictionary;
 
+    this->dictSize = dictSize;
+
+    this->tag = tag;
+
     //WRandGen::setUpgenerator();
 
+}
+
+bool Speaker::increaseAge()
+{
+    if( age >= MAX_AGE)
+    {
+        return false;
+    } else 
+    {
+        age++;
+    }
+    return true;
 }
 
 bool Speaker::compare(Speaker &otherSpeaker)
@@ -67,6 +85,14 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
     //shuffle the dictionary to share different words each time
     std::shuffle(std::begin(dictionary), std::end(dictionary), std::default_random_engine());
+
+    std::vector<Word> tempDictionary = dictionary;
+    for(Word word : tempDictionary)
+    {
+        if(word.getPrestige() > PRESTIGE_THRESHOLD)
+            dictionary.insert(dictionary.begin(), word);
+
+    }
 
     //remove blank strings words from dictionaries
     for(int i = 0; i < dictionary.size(); i++)
@@ -200,7 +226,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     //Word sharedWord = dictionary[i].Kill()
                     //set up a dummy word that indicates a kill val
                     std::vector<std::string> killList = {"KILL"};
-                    Word sharedWord = Word("KILL", "KILL", killList);
+                    Word sharedWord = Word("KILL", "KILL", killList, "KILL");
                     sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -322,7 +348,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                         } else 
                         {
-                            Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels());
+                            Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels(), dictionary[i].getValue());
                             sharedDictionary.push_back(sharedWord);
                         }
 
@@ -386,7 +412,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 14:
                     {
                     //broadening 
-                    Word sharedWord = dictionary[i].Broadening();
+                    Word sharedWord = dictionary[i].Broadening(meaningLoader);
                     sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -394,7 +420,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 15:
                     {
                     //narrowing
-                    Word sharedWord = dictionary[i].Narrowing();
+                    Word sharedWord = dictionary[i].Narrowing(meaningLoader);
                     sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -402,7 +428,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                 case 16:
                     {
                     //changing meaning
-                    Word sharedWord = dictionary[i].ChangeMeaning();
+                    Word sharedWord = dictionary[i].ChangeMeaning(meaningLoader);
                     sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -436,7 +462,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     
                      //create pesudo null object to check in the learning function
                      std::vector<std::string> dummyList = {"DEFAULT"};
-                     Word sharedWord = Word("DEFAULT", "DEFAULT", dummyList);
+                     Word sharedWord = Word("DEFAULT", "DEFAULT", dummyList, "DEFAULT", meaningLoader);
 
                      sharedDictionary.push_back(sharedWord);
                     }
@@ -453,9 +479,34 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
 }
 
+void Speaker::cutWords(int dictionaryWordCap)
+{
+    while(dictionary.size() > dictionaryWordCap)
+    {
+        std::uniform_int_distribution<uint_least32_t> distCut( 0, dictionary.size());
+        dictionary.erase(dictionary.begin() + distCut(LangSeed::rng));
+    }
+}
+
+void Speaker::move()
+{
+    std::uniform_int_distribution<uint_least32_t> distMoveX( -24, 24);
+    std::uniform_int_distribution<uint_least32_t> distMoveY( -24, 24);
+    int addx = distMoveX(LangSeed::rng);
+    int addy = distMoveY(LangSeed::rng);
+    if(this->x + addx  > 100 or this->x + addx < 100)
+    {
+        this->x += distMoveX(LangSeed::rng);
+    }
+    if(this->y + addy > 100 or this->y + addy < 100)
+    {
+        this->y += distMoveY(LangSeed::rng);
+    }
+}
 
 void Speaker::learnWords(std::vector<Word> sharedWords)
 {
+    cutWords(dictSize);
     //remove complete repeat words 
     for(int i = 0; i < dictionary.size(); i++)
     {

@@ -1,10 +1,12 @@
 #include "Word.hpp"
 
-Word::Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &InVowels)
+Word::Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &InVowels, const std::string &baseWord, int prestige)
 {
     this->value = value;
     this->meaning = meaning;
     this->vowels = rebuildVowelList(InVowels);
+    this->baseWord = baseWord;
+    this->prestigePoint = prestige;
 }
 
 bool Word::Equal(const Word &otherWord) const
@@ -60,7 +62,7 @@ Word Word::LengthenVowel(const std::vector<std::string> &vowelPool) const
     std::string copyVal = value;
 
     std::string tempVal = copyVal.replace(indexOfVowel, selectedVowel.size(), LongVowelPool[distVowelPool(LangSeed::rng)]);;
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 Word Word::ShortenVowel(const std::vector<std::string> &vowelPool) const
@@ -68,7 +70,7 @@ Word Word::ShortenVowel(const std::vector<std::string> &vowelPool) const
     //check if the word is only one char
     if(value.size() < 2)
     {
-        return Word(value, meaning, vowels); 
+        return Word(value, meaning, vowels, value, prestigePoint); 
     } else {
     //this loop could be rewritten
        std::vector<std::string> ShortVowelPool;
@@ -94,7 +96,7 @@ Word Word::ShortenVowel(const std::vector<std::string> &vowelPool) const
         std::string copyVal = value;
         std::string tempVal = copyVal.replace(indexOfVowel, selectedVowel.size(), ShortVowelPool[distVowelPool(LangSeed::rng)]);
         
-        return Word(tempVal, meaning, vowels); 
+        return Word(tempVal, meaning, vowels, value, prestigePoint); 
     }
     
 }
@@ -107,7 +109,7 @@ Word Word::DeleteVowel() const
 
     std::string copyVal = value;
     std::string tempVal = copyVal.erase(indexOfVowel, selectedVowel.size());
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 Word Word::AddSuffix(const std::vector<std::string> &suffixPool) const
@@ -117,7 +119,7 @@ Word Word::AddSuffix(const std::vector<std::string> &suffixPool) const
     std::string selectedSuffix = suffixPool[distSuffix(LangSeed::rng)];
     std::string tempVal = value + selectedSuffix;
 
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 
 }
 
@@ -128,7 +130,7 @@ Word Word::AddPreffix(const std::vector<std::string> &preffixPool) const
     std::string selectedPreffix = preffixPool[distPreffix(LangSeed::rng)];
     std::string tempVal = selectedPreffix + value;
     
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 
 }
 
@@ -141,7 +143,7 @@ Word Word::Shrink(int start, int end) const
     }
     std::string tempVal = value.substr(start, start - end);
 
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 //idk how to set up MIX yet, I don't know what I want the mixed word to look like yet
@@ -155,7 +157,7 @@ Word Word::Mix(int start, int end, int otherWordStart, int otherWordEnd, const W
 
     std::string copyVal = value;
     std::string tempVal = copyVal.replace(start, end - start, otherWord.getValue().substr(otherWordStart, otherWordEnd - otherWordStart));
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 
 }
 
@@ -170,9 +172,19 @@ Word Word::Negate(const std::vector<std::string> &negatePool) const
     std::string selectedNegation = negatePool[distNegate(LangSeed::rng)];
     std::string tempVal = selectedNegation + value;
 
-    std::string tempMeaning = "the opposite of " + meaning;
+    //creates double negative makes a positive
+    std::string tempMeaning;
+    std::size_t found=meaning.find("the opposite of ");
+    if(found == std::string::npos)
+    {
+        tempMeaning = "the opposite of " + meaning;
+    } else 
+    {
+        std::string currentMeaningTemp = meaning;
+        tempMeaning = currentMeaningTemp.erase(0, 17);
+    }
     
-    return Word(tempVal, tempMeaning, vowels);
+    return Word(tempVal, tempMeaning, vowels, value, prestigePoint);
 
 }
 //don't pass by const because it causes a const nightmare I will have to look into
@@ -190,7 +202,7 @@ Word Word::Subsitute(int start, int end, Word &otherWord, bool replace) const
     }else{
       tempVal = copyVal.replace(start, end - start, otherWord.getValue().substr(start, end - start));  
     }
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 Word Word::CreateNew(int size, bool structuredCreation) const
@@ -234,7 +246,7 @@ Word Word::CreateNew(int size, bool structuredCreation) const
 
     }
 
-    return Word(tempVal, tempMeaning, vowels);
+    return Word(tempVal, tempMeaning, vowels, value, prestigePoint);
 }
 
 Word Word::ClipEnd(int start) const
@@ -242,7 +254,7 @@ Word Word::ClipEnd(int start) const
     std::string copyVal = value;
     std::string tempVal = copyVal.erase(start);
 
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 Word Word::ClipFront(int end) const
@@ -250,7 +262,7 @@ Word Word::ClipFront(int end) const
     std::string copyVal = value;
     std::string tempVal = copyVal.erase(0, end);
 
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 Word Word::Compound(const Word &otherWord) const
@@ -258,39 +270,60 @@ Word Word::Compound(const Word &otherWord) const
     std::uniform_int_distribution<uint_least32_t> dist = WRandGen::distribute( 0,  1);
     std::string tempVal = (dist(LangSeed::rng) > 1) ? otherWord.getValue() + value : value + otherWord.getValue();
 
-    return Word(tempVal, meaning, vowels);
+    return Word(tempVal, meaning, vowels, value, prestigePoint);
 }
 
 /*modify the meaning of the words.
   this will probably require a couple API calls */
 
-Word Word::Broadening() const
+Word Word::Broadening(MeaningLoader& meaningLoader) const
 {
-
+    std::string tempMeaning = meaningLoader.exoticWord();
+    return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
-Word Word::Narrowing() const
+Word Word::Narrowing(MeaningLoader& meaningLoader) const
 {
-
+    std::string tempMeaning = meaningLoader.frequentMeaning();
+    return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
-Word Word::ChangeMeaning() const
+Word Word::ChangeMeaning(MeaningLoader& meaningLoader) const
 {
-
+    std::string tempMeaning = meaningLoader.randMeaning();
+    return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
 Word Word::Ameliorate() const
 {
-
+    std::uniform_int_distribution<uint_least32_t> dist = WRandGen::distribute( 0,  MAX_PRESTIGE_PER_WORD);
+    int tempPrestige = prestigePoint + dist(LangSeed::rng);
+    return Word(value, meaning, vowels, value, tempPrestige);
 }
 
 Word Word::Pejorate() const
 {
-
+    std::uniform_int_distribution<uint_least32_t> dist = WRandGen::distribute( 0,  MAX_PRESTIGE_PER_WORD);
+    int tempPrestige = prestigePoint - dist(LangSeed::rng);
+    return Word(value, meaning, vowels, value, tempPrestige);
 }
 
 Word Word::OppositeMeaning() const
 {
+    //different from negate because it only changes the meaning of the words not structure
+    //creates double negative makes a positive
+    std::string tempMeaning;
+    std::size_t found=meaning.find("the opposite of ");
+    if(found == std::string::npos)
+    {
+        tempMeaning = "the opposite of " + meaning;
+    } else 
+    {
+        std::string currentMeaningTemp = meaning;
+        tempMeaning = currentMeaningTemp.erase(0, 17);
+    }
+    
+    return Word(value, tempMeaning, vowels, value, prestigePoint);
 
 }
 

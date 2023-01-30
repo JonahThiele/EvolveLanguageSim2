@@ -8,11 +8,12 @@
 #include "Constants.h"
 #include  "WRandGen.hpp"
 #include "LangSeed.hpp"
+#include "MeaningLoader.hpp"
 
 class Word {
 
     public:
-        Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &vowels);
+        Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &vowels, const std::string &baseWord, int prestige);
 
 
         //check the equality of another word to this one
@@ -30,6 +31,9 @@ class Word {
         std::string getBaseWord() {return baseWord;}
         const std::vector<std::string>& getVowels() const {return vowels;}
         std::vector<std::string> getVowels() {return vowels;}
+        
+        const int getPrestige() const{return prestigePoint;}
+        int getPrestige() {return prestigePoint;}
 
         //Lexicology mutation methods (change the spelling of the words)
         Word LengthenVowel(const std::vector<std::string> &vowelPool) const;
@@ -57,13 +61,13 @@ class Word {
         //meaning mutation (will need to connect to an API for this so it might be a much later feature)
 
         //increasing the meaning of the word
-        Word Broadening() const;
+        Word Broadening(MeaningLoader &meaningLoader) const;
 
         //decreasing the meaning of the word
-        Word Narrowing() const;
+        Word Narrowing(MeaningLoader &meaningLoader) const;
 
         //100% different meaning
-        Word ChangeMeaning() const;
+        Word ChangeMeaning(MeaningLoader &meaningLoader) const;
 
         //increase the status of the word, lose its more negative connotations
         Word Ameliorate() const;
@@ -80,6 +84,8 @@ class Word {
         mutable std::string value;
         mutable std::vector<std::string> vowels;
         mutable std::string baseWord;
+
+        int prestigePoint;
 
         //random generator
         //std::mt19937 gen = WRandGen::generator();
