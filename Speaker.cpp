@@ -1,8 +1,8 @@
 #include "Speaker.hpp"
 
 
-Speaker::Speaker(int x, int y, std::vector<Word> dictionary, int dictSize, MeaningLoader &meaningLoaderIn, int tag)
-: meaningLoader(meaningLoaderIn)
+Speaker::Speaker(int x, int y, std::vector<Word> dictionary, int dictSize, std::shared_ptr<MeaningLoader> meaningLoaderIn, int tag)
+: meaningLoader(std::move(meaningLoaderIn))
 {
     //makes sure the Speaker is within the bounds of the map
     if(x > MAX_X)
@@ -226,7 +226,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     //Word sharedWord = dictionary[i].Kill()
                     //set up a dummy word that indicates a kill val
                     std::vector<std::string> killList = {"KILL"};
-                    Word sharedWord = Word("KILL", "KILL", killList, "KILL");
+                    Word sharedWord = Word("KILL", "KILL", killList, "KILL", 0);
                     sharedDictionary.push_back(sharedWord);
                     }
                     break;
@@ -348,7 +348,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
 
                         } else 
                         {
-                            Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels(), dictionary[i].getValue());
+                            Word sharedWord = Word(dictionary[i].getValue(), dictionary[i].getMeaning(), dictionary[i].getVowels(), dictionary[i].getValue(), dictionary[i].getPrestige());
                             sharedDictionary.push_back(sharedWord);
                         }
 
@@ -462,7 +462,7 @@ std::vector<Word> Speaker::speakToOtherPerson(Speaker & otherPerson)
                     
                      //create pesudo null object to check in the learning function
                      std::vector<std::string> dummyList = {"DEFAULT"};
-                     Word sharedWord = Word("DEFAULT", "DEFAULT", dummyList, "DEFAULT", meaningLoader);
+                     Word sharedWord = Word("DEFAULT", "DEFAULT", dummyList, "DEFAULT", 0);
 
                      sharedDictionary.push_back(sharedWord);
                     }

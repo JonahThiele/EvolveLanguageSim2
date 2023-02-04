@@ -46,3 +46,5 @@
 
 #define KILL_ZONE 30
 #define BARBS_ON false
+#define BARBS_MAX 50
+#define BARB_DICT_FILE "barbDict.xml"

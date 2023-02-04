@@ -5,6 +5,7 @@
 #include <vector>
 #include<bits/stdc++.h>
 #include <cmath>
+#include <memory>
 #include "Constants.h"
 #include  "WRandGen.hpp"
 #include "LangSeed.hpp"
@@ -61,13 +62,13 @@ class Word {
         //meaning mutation (will need to connect to an API for this so it might be a much later feature)
 
         //increasing the meaning of the word
-        Word Broadening(MeaningLoader &meaningLoader) const;
+        Word Broadening(std::shared_ptr<MeaningLoader> meaningLoader) const;
 
         //decreasing the meaning of the word
-        Word Narrowing(MeaningLoader &meaningLoader) const;
+        Word Narrowing(std::shared_ptr<MeaningLoader> meaningLoader) const;
 
         //100% different meaning
-        Word ChangeMeaning(MeaningLoader &meaningLoader) const;
+        Word ChangeMeaning(std::shared_ptr<MeaningLoader> meaningLoader) const;
 
         //increase the status of the word, lose its more negative connotations
         Word Ameliorate() const;

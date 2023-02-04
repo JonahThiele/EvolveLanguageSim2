@@ -1,3 +1,6 @@
+#ifndef MEANING_LOADER_HPP
+#define MEANING_LOADER_HPP
+//remember to set up headers
 #include <string>
 #include <vector>
 #include <fstream>
@@ -22,3 +25,5 @@ class MeaningLoader {
     std::string meaningList[10000];
 
 };
+
+#endif

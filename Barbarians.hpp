@@ -1,3 +1,5 @@
+#ifndef BARBARIANS_HPP
+#define BARBARIANS_HPP
 #include <string>
 #include <vector>
 #include "Speaker.hpp"
@@ -21,3 +23,5 @@ class Barbarian{
         std::vector<Word> dictionary;
 
 };
+
+#endif

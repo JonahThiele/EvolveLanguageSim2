@@ -7,12 +7,14 @@
 #include "WRandGen.hpp"
 #include "LangSeed.hpp"
 #include "MeaningLoader.hpp"
+#include "Barbarians.hpp"
 #include <vector>
 #include <random>
 #include <cctype>
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
+#include <memory>
 
 
 

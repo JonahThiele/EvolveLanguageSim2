@@ -2,6 +2,7 @@
 #define SPEAKER_CPP
 
 #include <string>
+#include <memory>
 #include <vector>
 #include "Word.hpp"
 #include "Constants.h"
@@ -16,7 +17,8 @@
 
 class Speaker {
     public:
-        Speaker(int x, int y, std::vector<Word>, int dictSize, MeaningLoader &meaningLoader, int tag);
+        Speaker(int x, int y, std::vector<Word>, int dictSize, std::shared_ptr<MeaningLoader> meaningLoader, int tag);
+        //Speaker(int x, int y, std::vector<Word>, int dictSize, MeaningLoader &&, int tag) = delete;
 
         //interact with other person and share % of the dictionary
         std::vector<Word> speakToOtherPerson(Speaker &otherPerson);
@@ -53,7 +55,7 @@ class Speaker {
         //random handling
         //std::mt19937 gen = WRandGen::generator();
 
-        MeaningLoader& meaningLoader;
+        std::shared_ptr<MeaningLoader> meaningLoader;
 
         int age = 0;
 

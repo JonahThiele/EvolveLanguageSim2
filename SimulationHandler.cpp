@@ -5,6 +5,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     bool run = true;
 
     std::vector<Speaker> SpeakerPopulation;
+    std::vector<Barbarian> BarbarianPopulation;
 
     //set up random generation for position of speakers
 
@@ -29,6 +30,11 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     //call new random seed
 
     //WRandGen::setUpgenerator();
+    for(int barbGenerated = 0;  barbGenerated < 50; barbGenerated++)
+    {
+        dictLoader.InputDictionary(BARB_DICT_FILE);
+        BarbarianPopulation.push_back(Barbarian(dictLoader.getDictionary(), distx(LangSeed::rng), disty(LangSeed::rng)));
+    }
 
     for(int speakersGenerated = 0; speakersGenerated < speakers; speakersGenerated++)
     {
@@ -41,20 +47,30 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
         if(distIsolate(LangSeed::rng) <= 24)
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), meaningLoader, ISOLATION_TAG));
+            SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), ISOLATION_TAG));
         } else 
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), meaningLoader, 0));
+            SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0));
         }
         
     }
     
+    bool barbs = BARBS_ON;
+    
     while(generations > 0)
     {
-        if(BARBS_ON)
+        if(barbs && generations > 3)
         {
-            
+            std::cout << "BARBARIANS!!!\n";
+            for(Barbarian barb : BarbarianPopulation)
+            {
+                //purges words by killing speakers and adds a different influence
+                barb.Murder(SpeakerPopulation);
+                std::uniform_int_distribution<uint_least32_t> distSpeak = WRandGen::distribute( 0,  SpeakerPopulation.size() - 1);
+                SpeakerPopulation[distSpeak(LangSeed::rng)].learnWords(barb.Speak());
+            }
+            barbs = !barbs;
         }
         std::cout << "Gen:" << generations << "\n";
         for(int speaker1 = 0; speaker1 < SpeakerPopulation.size(); speaker1++)
@@ -84,7 +100,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             if(distBirth(LangSeed::rng) <= 24)
             {
                 dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-                SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), meaningLoader, 0));
+                SpeakerPopulation.push_back(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0));
             }
          
         }

@@ -276,21 +276,21 @@ Word Word::Compound(const Word &otherWord) const
 /*modify the meaning of the words.
   this will probably require a couple API calls */
 
-Word Word::Broadening(MeaningLoader& meaningLoader) const
+Word Word::Broadening(std::shared_ptr<MeaningLoader> meaningLoader) const
 {
-    std::string tempMeaning = meaningLoader.exoticWord();
+    std::string tempMeaning = meaningLoader->exoticWord();
     return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
-Word Word::Narrowing(MeaningLoader& meaningLoader) const
+Word Word::Narrowing(std::shared_ptr<MeaningLoader> meaningLoader) const
 {
-    std::string tempMeaning = meaningLoader.frequentMeaning();
+    std::string tempMeaning = meaningLoader->frequentMeaning();
     return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
-Word Word::ChangeMeaning(MeaningLoader& meaningLoader) const
+Word Word::ChangeMeaning(std::shared_ptr<MeaningLoader> meaningLoader) const
 {
-    std::string tempMeaning = meaningLoader.randMeaning();
+    std::string tempMeaning = meaningLoader->randMeaning();
     return Word(value, tempMeaning, vowels, value, prestigePoint);
 }
 
