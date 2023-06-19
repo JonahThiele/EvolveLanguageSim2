@@ -2,7 +2,8 @@
 
 void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generations)
 {
-    bool run = true;
+    //save generation max so we can create a proper loading screen
+    int generationMax = generations;
 
     std::vector<Speaker> SpeakerPopulation;
     std::vector<Barbarian> BarbarianPopulation;
@@ -72,6 +73,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             }
             barbs = !barbs;
         }
+
         std::cout << "Gen:" << generations << "\n";
         for(int speaker1 = 0; speaker1 < SpeakerPopulation.size(); speaker1++)
         {
