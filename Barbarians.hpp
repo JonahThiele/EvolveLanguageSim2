@@ -4,15 +4,16 @@
 #include <vector>
 #include "Speaker.hpp"
 #include "Word.hpp"
+#include <memory>
 
 class Barbarian{
     public:
         //presserve the language and don't modify, can't speak to other barbarians.
-        Barbarian(std::vector<Word> dictionary, int x, int y);
+        Barbarian(std::vector<std::shared_ptr<Word>> dictionary, int x, int y);
 
-        void Murder(std::vector<Speaker> &speakerList);
+        void Murder(std::vector<std::shared_ptr<Speaker>> &speakerList);
 
-        std::vector<Word> Speak();
+        std::vector<std::shared_ptr<Word>> Speak();
     
     private:
 
@@ -20,7 +21,7 @@ class Barbarian{
 
         int y;
 
-        std::vector<Word> dictionary;
+        std::vector<std::shared_ptr<Word>> dictionary;
 
 };
 

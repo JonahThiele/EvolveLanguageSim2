@@ -7,6 +7,7 @@
 #include "Word.hpp"
 #include "Constants.h"
 #include <regex>
+#include <memory>
 
 class DictionaryLoader {
 
@@ -15,17 +16,17 @@ class DictionaryLoader {
         // use default constructor 
         //pass the dictionary to to a speaker
 
-        std::vector<Word> getDictionary(){return dictionary;}
+        std::vector<std::shared_ptr<Word>> getDictionary(){return dictionary;}
 
         //outputs the dictionary as an xml file
-        void OutputDictionary(std::vector<Word> Speakerdictionary);
+        void OutputDictionary(std::vector<std::shared_ptr<Word>> Speakerdictionary);
 
         //inputs the xml files to dictionaries
         void InputDictionary(std::string dictionaryFile);
 
     private:
         
-        std::vector<Word> dictionary;
+        std::vector<std::shared_ptr<Word>> dictionary;
 };
 
 #endif

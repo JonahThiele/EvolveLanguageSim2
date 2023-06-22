@@ -15,8 +15,10 @@
 #include <cstdio>
 #include <unistd.h>
 #include <memory>
-
-
+#include <ctime>
+#include <cmath>
+#include <cstdio>
+#include <ncurses.h>
 
 class SimulationHandler {
     public:

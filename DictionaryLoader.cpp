@@ -1,5 +1,4 @@
 #include "DictionaryLoader.hpp"
-#include <iostream>
 
 void DictionaryLoader::InputDictionary(std::string dictionaryFile)
 {
@@ -59,12 +58,12 @@ void DictionaryLoader::InputDictionary(std::string dictionaryFile)
             }
         }
 
-        Word newWord = Word(tempValue, tempMeaning, tempVowels, tempBaseWord, prestige);
-        dictionary.push_back(newWord);
+        std::shared_ptr<Word> newWord = std::make_shared<Word>(Word(tempValue, tempMeaning, tempVowels, tempBaseWord, prestige));
+        dictionary.emplace_back(newWord);
     }
 }
 
-void DictionaryLoader::OutputDictionary(std::vector<Word> Speakerdictionary)
+void DictionaryLoader::OutputDictionary(std::vector<std::shared_ptr<Word>> Speakerdictionary)
 {
     //figure out how to add header for xml that states version, etc
 
@@ -72,24 +71,24 @@ void DictionaryLoader::OutputDictionary(std::vector<Word> Speakerdictionary)
 
     pugi::xml_node DictionaryNode = outputDictionary.append_child("Dictionary");
 
-    for(Word word : Speakerdictionary)
+    for(auto &word : Speakerdictionary)
     {
         //add every word in the dictionary as a node
         pugi::xml_node dictionaryWord = DictionaryNode.append_child("Word");
 
         //take the value from the word class and add it as a node of the word in the xml
         pugi::xml_node wordValue = dictionaryWord.append_child("Value");
-        wordValue.append_child(pugi::node_pcdata).set_value(word.getValue().c_str());
+        wordValue.append_child(pugi::node_pcdata).set_value(word->getValue().c_str());
 
         pugi::xml_node wordVowels = dictionaryWord.append_child("Vowels");
 
         //concatenate the vector of strings to a string to set in the xml
         std::string xmlStr;
-        for (const auto &vowel : word.getVowels()) xmlStr += (vowel + ",");
+        for (const auto &vowel : word->getVowels()) xmlStr += (vowel + ",");
         wordVowels.append_child(pugi::node_pcdata).set_value(xmlStr.c_str());
 
         pugi::xml_node wordMeaning = dictionaryWord.append_child("Meaning");
-        wordMeaning.append_child(pugi::node_pcdata).set_value(word.getMeaning().c_str());
+        wordMeaning.append_child(pugi::node_pcdata).set_value(word->getMeaning().c_str());
 
     }
     

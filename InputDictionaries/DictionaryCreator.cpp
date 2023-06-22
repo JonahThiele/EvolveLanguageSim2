@@ -4,14 +4,82 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include"argumentHandler.hpp"
 #include<cstdlib>
+#include<algorithm>
+
+
+char* getCmdOption(char ** begin, char ** end, const std::string & option)
+{
+    
+    char ** itr = std::find(begin, end, option);
+    
+    if (itr != end && ++itr != end)
+    {
+        return *itr;
+    }    
+   
+    return 0;
+}
+
+bool cmdOptionExists(char** begin, char** end, const std::string& option)
+{
+       return std::find(begin, end, option) != end;
+}
+
+
+int parseInt(const std::string &s) { std::size_t pos; int result = std::stoi(s, &pos); if (pos != s.size()) throw std::runtime_error("can't parse integer"); return result; }
+
 
 
 int main(int argc, char** argv){
+          
+   //if -h flag is selected the program doesn't try to run 
+    if(cmdOptionExists(argv, argv+argc, "-h")){
+        std::cout << "This is the intial dictionary creator:\n";
+        std::cout << "-m Max Word Length\n";
+        std::cout << "-a Amount of Words\n";
+        std::cout << "-f Filename for output dictionary\n";
+    
+    }else{
+    
+        int MaxWordLen, AmountofWords;
+        std::string filename;
+        
+        //setting defaults if no flag is specificed, need to handle none number here so it doesn't crash
+        if(cmdOptionExists(argv, argv+argc, "-m")){
+            
+            MaxWordLen = parseInt(getCmdOption(argv, argv + argc, "-m"));
+
+        }else{
+        
+            MaxWordLen = 10;
+        
+        }
+
+        if(cmdOptionExists(argv, argv+argc, "-a")){
+            
+            AmountofWords = parseInt(getCmdOption(argv, argv+argc, "-a"));
+
+        
+        }else{
+
+            AmountofWords = 20;
+        }
+
+        
+        if(cmdOptionExists(argv, argv+argc, "-f")){
+
+            filename = getCmdOption(argv, argv+argc, "-f");
+        }else{
+
+            filename = "Dict.xml";
+        }
+
+
+    //handling the options through popt
 
     //open up the meaning list and create a vector of the words
-    std::ifstream input("words.txt");
+    std::ifstream input("./InputDictionaries/words.txt");
 
     std::vector<std::string> wordList;
 
@@ -23,7 +91,7 @@ int main(int argc, char** argv){
     }
 
     //handle the arguments
-    argumentHandler::parse(argc, argv);
+    
 
 
     pugi::xml_document doc;
@@ -36,51 +104,60 @@ int main(int argc, char** argv){
     //what is the root called?
     auto root = doc.append_child("Dictionary");
     
-
-    for( int i = 0; i <  argumentHandler::showMaxWordLen(); i++){
+    std:: srand((unsigned) time(NULL));   
+    
+    for( int i = 0; i <  AmountofWords; i++){
        
         //code to generate the random words I don't want to have to deal with 
         //passing rand back and forth from a function
         
 
-       std:: srand((unsigned) time(NULL));       
+          
        
        int lastVowel = 0;
        std::vector<char>  consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'y', 'z'};
        std::vector<char> vowels = {'a', 'e', 'i', 'o', 'u'};
        std::string word;
        std::vector<char> wordVowels;
-       
-       for(int b = 0; b < argumentHandler::showMaxWordLen();b++){
+        
+       int randLen = 1 + (std::rand() % MaxWordLen);   
+       for(int b = 0; b < randLen;b++){
 
            char letter;
            
            //0 - 2 char consonants between every vowel
-           int vowelOffset = std::rand() + 3;
+           int vowelOffset = std::rand() % 8;
 
            if(b - lastVowel <= vowelOffset){
                //mandatory vowel
-               letter = consonants[std::rand() + consonants.size()];
+               letter = consonants[std::rand() % consonants.size()];
            }else{
-               letter = vowels[std::rand() + vowels.size()];
+               letter = vowels[std::rand() %  vowels.size()];
                wordVowels.push_back(letter);
            }
 
            word += letter;
        }
-       
-       //convert the vowel vector into a string 
+      
+      std ::sort( wordVowels.begin(), wordVowels.end() );
+      wordVowels.erase(std::unique(wordVowels.begin(), wordVowels.end()), wordVowels.end()); 
+     
+      //convert the vowel vector into a string 
        std::string vowelsStr;
        for(char letter : wordVowels){
-           vowelsStr += ( letter + ',');
+           vowelsStr += letter;
+           vowelsStr += ',';
        }
+        
+      
+
 
        vowelsStr.erase(vowelsStr.begin() + vowelsStr.size() - 2, vowelsStr.end());
 
        //create random prestige point
-       int prestige = std::rand() + 100;
+       int prestige = std::rand() %  100;
 
-       std::string meaning = wordList[std::rand() + wordList.size()];
+       std::string meaning = wordList[std::rand() % wordList.size()];
        
         //generate a new word and place into an xml file
         pugi::xml_node Word  = root.append_child("Word");
@@ -107,15 +184,15 @@ int main(int argc, char** argv){
        
        pugi::xml_node Prestige = Word.append_child("Prestige");
        Prestige.append_child(pugi::node_pcdata).set_value(std::to_string(prestige).c_str());
+       
+
+       doc.save_file(filename.c_str());
+    
     }
+    
+  }
 
     return 0;
 
 }
-
-
-
-
-
-
 

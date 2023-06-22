@@ -1,5 +1,4 @@
 #include "Word.hpp"
-
 Word::Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &InVowels, const std::string &baseWord, int prestige)
 {
     this->value = value;
