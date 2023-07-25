@@ -91,9 +91,10 @@ int main(int argc, char** argv){
     }
 
     //handle the arguments
+
+    //hard coding the different dialect options right now and will rewrite them later to generate on the fly
+    std::string dialects[] = {"Nokain", "Churst", "Barql", "Pemvost"};
     
-
-
     pugi::xml_document doc;
 
     auto declarationNode = doc.append_child(pugi::node_declaration);
@@ -109,10 +110,7 @@ int main(int argc, char** argv){
     for( int i = 0; i <  AmountofWords; i++){
        
         //code to generate the random words I don't want to have to deal with 
-        //passing rand back and forth from a function
-        
-
-          
+        //passing rand back and forth from a function    
        
        int lastVowel = 0;
        std::vector<char>  consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'y', 'z'};
@@ -185,6 +183,8 @@ int main(int argc, char** argv){
        pugi::xml_node Prestige = Word.append_child("Prestige");
        Prestige.append_child(pugi::node_pcdata).set_value(std::to_string(prestige).c_str());
        
+       pugi::xml_node Dialect = Word.append_child("Dialect");
+       Dialect.append_child(pugi::node_pcdata).set_value(dialects[std::rand() & 3].c_str());
 
        doc.save_file(filename.c_str());
     

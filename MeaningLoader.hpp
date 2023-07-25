@@ -21,8 +21,17 @@ class MeaningLoader {
     //grab a less frequent word
     std::string exoticWord();
 
+    std::string randPrefix();
+    std::string randSuffix();
+
+    std::vector<std::string> getPrefixMeanings(){ return prefixMeanings; }
+    std::vector<std::string> getSuffixMeanings(){ return suffixMeanings; }
+
     private:
     std::string meaningList[10000];
+    //use vectors for now as we might increase the size of the list
+    std::vector<std::string> prefixMeanings;
+    std::vector<std::string> suffixMeanings;
 
 };
 

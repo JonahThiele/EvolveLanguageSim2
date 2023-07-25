@@ -1,11 +1,13 @@
 #include "Word.hpp"
-Word::Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &InVowels, const std::string &baseWord, int prestige)
+Word::Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &InVowels, const std::string &baseWord, int prestige, bool NegWord, std::string dialect)
 {
     this->value = value;
     this->meaning = meaning;
     this->vowels = rebuildVowelList(InVowels);
     this->baseWord = baseWord;
     this->prestigePoint = prestige;
+    this->NegWord = NegWord;
+    this->dialect = dialect;
 }
 
 bool Word::Equal(const Word &otherWord) const

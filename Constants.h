@@ -35,8 +35,8 @@
 #define CLOSEX 25
 #define CLOSEY 25
 
-#define MIN_MAX_DICT 100
-#define MAX_MAX_DICT 1000
+#define MIN_MAX_DICT 10
+#define MAX_MAX_DICT 100
 #define MAX_PRESTIGE_PER_WORD 25
 #define PRESTIGE_THRESHOLD 50
 

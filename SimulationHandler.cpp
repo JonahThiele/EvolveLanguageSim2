@@ -16,7 +16,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     std::uniform_int_distribution<uint_least32_t> distx = WRandGen::distribute( 0,  MAX_X);
 
     //set the random picking of a dictioanry for the speakers, based on cmd line args
-    //set this to a constant for now
+    //set this tes  a constant for now
     std::uniform_int_distribution<uint_least32_t> distDict = WRandGen::distribute( 0,  DEFAULT_RANDOM_DICTS - 1);
 
     //generate random sizes for the 
@@ -50,11 +50,11 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
         if(distIsolate(LangSeed::rng) <= 24)
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.emplace_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), ISOLATION_TAG))));
+            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), ISOLATION_TAG,10, 10, 10, "Standard") )));
         } else 
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.emplace_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0))));
+            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0, 10, 10, 10, "Standard"))));
         }
         
     }
@@ -98,7 +98,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             lastProgress = std::round(currProgress);
             //move the cursor up one and over two and delete the newline char which is replaced with the
             std::cout << offsetStr << std::endl;
-            std::cout << "\x1b[2A" << "\x1b[" + offsetStr << "C" << '\n';
+           // std::cout << "\x1b[2A" << "\x1b[" + offsetStr << "C" << '\n';
     }
 
         if(barbs && generations > 3)
@@ -140,7 +140,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             if(distBirth(LangSeed::rng) <= 24)
             {
                 dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-                SpeakerPopulation.emplace_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0))));
+                SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0, 10, 10, 10, "Standard"))));
             }
         
 

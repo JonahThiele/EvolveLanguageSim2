@@ -1,0 +1,64 @@
+ante : before
+anti : opposite of
+circum : around
+co : with 
+de : off
+dis : not
+em : cause to 
+en : cause to 
+epi : upon
+ex : former
+extra : beyond
+fore : before
+homo : same
+hyper : over
+il : not
+im : not 
+in : not
+ir : not
+im : into 
+in : into
+infra : below
+inter : between
+intra : between
+macro : large
+micro : small
+mid : middle
+mis : wrongly
+mono : one 
+non : without
+omni : all
+para : beside
+post : after
+pre : before
+re : again
+semi : half
+sub : under
+super : above
+therm : heat
+trans : across
+tri : three
+un : not
+uni : one
+endo : within 
+eu : good
+hemi : half
+hetero : different
+poly : many
+tetra : four
+iso : equal
+di : double
+hyper : abundant
+hypo : under
+peri : around
+pro : advancing
+con : joined
+auto : self
+pan : all 
+dia : going apart
+neo : new
+fore : before
+retro : backwards
+tele : distance
+be : to exist
+

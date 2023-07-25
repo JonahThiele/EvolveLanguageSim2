@@ -14,7 +14,7 @@
 class Word {
 
     public:
-        Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &vowels, const std::string &baseWord, int prestige);
+        Word(const std::string &value, const std::string &meaning, const std::vector<std::string> &vowels, const std::string &baseWord, int prestige, bool negWord = false, std::string dialect = "Standard");
 
 
         //check the equality of another word to this one
@@ -78,6 +78,12 @@ class Word {
 
         //change the word meaning to its complete opposite
         Word OppositeMeaning() const;
+        
+        std::string getDialect()const{ return dialect;}
+        //overload operators for sorting purposes
+        bool operator< (const Word &other) const {
+            return prestigePoint < other.getPrestige();
+        }
 
     private:
 
@@ -88,8 +94,8 @@ class Word {
 
         int prestigePoint;
 
-        //random generator
-        //std::mt19937 gen = WRandGen::generator();
+        bool NegWord = false;
+        std::string dialect;
 
         //take out the vowels that are no longer in the word
         std::vector<std::string> rebuildVowelList(const std::vector<std::string> &vowelList) const;
