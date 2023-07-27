@@ -15,7 +15,7 @@ MeaningLoader::MeaningLoader()
     std::string line;
     while(std::getline(prefixFile, line)){
         std::size_t index = line.find(":");
-        std::string meaning = line.substr(index - 1);
+        std::string meaning = line.substr(index + 1);
         //trim the line
         meaning.erase(std::remove_if(meaning.begin(), meaning.end(), ::isspace),
         meaning.end());

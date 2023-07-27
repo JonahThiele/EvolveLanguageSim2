@@ -1,54 +1,9 @@
 <?xml version="1.0"?>
 <Dictionary>
 	<Word>
-		<Value>tlehian</Value>
-		<Vowels>a,e,,</Vowels>
-		<Meaning>performances</Meaning>
-	</Word>
-	<Word>
-		<Value>rurwdoeiiu</Value>
-		<Vowels>e,i,o,,</Vowels>
-		<Meaning>month</Meaning>
-	</Word>
-	<Word>
-		<Value>zvu</Value>
+		<Value>dqnk</Value>
 		<Vowels>,</Vowels>
-		<Meaning>documents</Meaning>
-	</Word>
-	<Word>
-		<Value>qwaeu</Value>
-		<Vowels>a,e,,</Vowels>
-		<Meaning>inventory</Meaning>
-	</Word>
-	<Word>
-		<Value>qbpcvj</Value>
-		<Vowels>,</Vowels>
-		<Meaning>celtic</Meaning>
-	</Word>
-	<Word>
-		<Value>cyot</Value>
-		<Vowels>,</Vowels>
-		<Meaning>short</Meaning>
-	</Word>
-	<Word>
-		<Value>jfegu</Value>
-		<Vowels>e,,</Vowels>
-		<Meaning>roads</Meaning>
-	</Word>
-	<Word>
-		<Value>bdaqsiao</Value>
-		<Vowels>a,i,,</Vowels>
-		<Meaning>receipt</Meaning>
-	</Word>
-	<Word>
-		<Value>mbiileo</Value>
-		<Vowels>e,i,,</Vowels>
-		<Meaning>stack</Meaning>
-	</Word>
-	<Word>
-		<Value>cwnraiue</Value>
-		<Vowels>a,e,i,,</Vowels>
-		<Meaning>law</Meaning>
+		<Meaning>syntax</Meaning>
 	</Word>
 	<Word>
 		<Value>yneehh</Value>
@@ -56,34 +11,9 @@
 		<Meaning>customs</Meaning>
 	</Word>
 	<Word>
-		<Value>f</Value>
-		<Vowels>,</Vowels>
-		<Meaning>ports</Meaning>
-	</Word>
-	<Word>
-		<Value>y</Value>
-		<Vowels>,</Vowels>
-		<Meaning>leasing</Meaning>
-	</Word>
-	<Word>
-		<Value>dqnk</Value>
-		<Vowels>,</Vowels>
-		<Meaning>syntax</Meaning>
-	</Word>
-	<Word>
-		<Value>tvb</Value>
-		<Vowels>,</Vowels>
-		<Meaning>threat</Meaning>
-	</Word>
-	<Word>
-		<Value>zvkgaa</Value>
-		<Vowels>,</Vowels>
-		<Meaning>slovakia</Meaning>
-	</Word>
-	<Word>
-		<Value>sm</Value>
-		<Vowels>,</Vowels>
-		<Meaning>designs</Meaning>
+		<Value>tlehian</Value>
+		<Vowels>a,e,,</Vowels>
+		<Meaning>performances</Meaning>
 	</Word>
 	<Word>
 		<Value>jdeheeou</Value>
@@ -91,13 +21,83 @@
 		<Meaning>fly</Meaning>
 	</Word>
 	<Word>
+		<Value>qwaeu</Value>
+		<Vowels>a,e,,</Vowels>
+		<Meaning>inventory</Meaning>
+	</Word>
+	<Word>
+		<Value>mbiileo</Value>
+		<Vowels>e,i,,</Vowels>
+		<Meaning>stack</Meaning>
+	</Word>
+	<Word>
 		<Value>hgjieuau</Value>
 		<Vowels>a,e,i,,</Vowels>
 		<Meaning>advance</Meaning>
 	</Word>
 	<Word>
+		<Value>tvb</Value>
+		<Vowels>,</Vowels>
+		<Meaning>threat</Meaning>
+	</Word>
+	<Word>
+		<Value>f</Value>
+		<Vowels>,</Vowels>
+		<Meaning>ports</Meaning>
+	</Word>
+	<Word>
+		<Value>rurwdoeiiu</Value>
+		<Vowels>e,i,o,,</Vowels>
+		<Meaning>month</Meaning>
+	</Word>
+	<Word>
+		<Value>zvkgaa</Value>
+		<Vowels>,</Vowels>
+		<Meaning>slovakia</Meaning>
+	</Word>
+	<Word>
+		<Value>jfegu</Value>
+		<Vowels>e,,</Vowels>
+		<Meaning>roads</Meaning>
+	</Word>
+	<Word>
+		<Value>cyot</Value>
+		<Vowels>,</Vowels>
+		<Meaning>short</Meaning>
+	</Word>
+	<Word>
+		<Value>sm</Value>
+		<Vowels>,</Vowels>
+		<Meaning>designs</Meaning>
+	</Word>
+	<Word>
 		<Value>pcjfei</Value>
 		<Vowels>e,,</Vowels>
 		<Meaning>larry</Meaning>
+	</Word>
+	<Word>
+		<Value>y</Value>
+		<Vowels>,</Vowels>
+		<Meaning>leasing</Meaning>
+	</Word>
+	<Word>
+		<Value>qbpcvj</Value>
+		<Vowels>,</Vowels>
+		<Meaning>celtic</Meaning>
+	</Word>
+	<Word>
+		<Value>bdaqsiao</Value>
+		<Vowels>a,i,,</Vowels>
+		<Meaning>receipt</Meaning>
+	</Word>
+	<Word>
+		<Value>cwnraiue</Value>
+		<Vowels>a,e,i,,</Vowels>
+		<Meaning>law</Meaning>
+	</Word>
+	<Word>
+		<Value>zvu</Value>
+		<Vowels>,</Vowels>
+		<Meaning>documents</Meaning>
 	</Word>
 </Dictionary>

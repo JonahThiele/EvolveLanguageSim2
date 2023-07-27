@@ -1,5 +1,41 @@
 #include "SimulationHandler.hpp"
 
+
+void LoadingBar(int currentProgress, int lastProgress, int currentUnit, int MaxUnit, int BarId, int numStatusBars){
+
+     if(BarId < 4 &&  !(BarId < 0)){
+
+      float  progressBarInc = 60 / MaxUnit;
+
+      currentProgress += progressBarInc;
+
+      if(currentUnit < MaxUnit){
+
+          if(std::round(currentProgress) > lastProgress){
+
+              lastProgress = std::round(currentProgress);
+
+              std::cout << "\x1b[0G" << "\x1b[" <<  BarId << "A" << MaxUnit - currentUnit << "/" << MaxUnit <<
+                  std::fflush(stdout);
+
+                 int lastProgressTemp = lastProgress;
+                  while(lastProgressTemp--){
+                       std::cout << "#";
+
+                   }
+                   std::cout << "\x1b[1B\x1b[0G";
+
+          }
+
+      }
+     }
+
+  }
+
+
+
+
+
 void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generations)
 {
     
@@ -26,8 +62,8 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
 
     //decalre Dictionary loader
     DictionaryLoader dictLoader;
-
-    MeaningLoader meaningLoader;
+    //MeaningLoader mLoader;
+    std::shared_ptr<MeaningLoader> meaningLoader = std::make_shared<MeaningLoader>();
 
     //call new random seed
 
@@ -47,14 +83,15 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
         //create 10% isolated community
         std::uniform_int_distribution<uint_least32_t> distIsolate = WRandGen::distribute( 0,  99);
         
+        std::shared_ptr<MeaningLoader> personalMeaning = meaningLoader;
         if(distIsolate(LangSeed::rng) <= 24)
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), ISOLATION_TAG,10, 10, 10, "Standard") )));
+            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), personalMeaning, ISOLATION_TAG,10, 10, 10, "Standard") )));
         } else 
         {
             dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0, 10, 10, 10, "Standard"))));
+            SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), personalMeaning, 0, 10, 10, 10, "Standard"))));
         }
         
     }
@@ -80,26 +117,10 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     
    std::cout << "starting at " << std::put_time(&localtm, "%c") << '\n';
   
-    float  progressBarInc = 60 / generations;  
-   //move the cursor down one line to start the info line
-   std::string offsetStr= std::to_string(digitOffset * 2 + 2);
-
-     std::cout << generations << '/' << generationMax << ":\n";
-     std::cout << "Starting the script..\n";
-
-    float currProgress = 0;
-    int lastProgress = 0;
+    
     while(generations > 0)
     {
-        currProgress += progressBarInc;
-       // std::cout << currProgress << std::endl;
-      // std::cout << lastProgress << std::endl;   
-        if(std::round(currProgress) > lastProgress){
-            lastProgress = std::round(currProgress);
-            //move the cursor up one and over two and delete the newline char which is replaced with the
-            std::cout << offsetStr << std::endl;
-           // std::cout << "\x1b[2A" << "\x1b[" + offsetStr << "C" << '\n';
-    }
+       
 
         if(barbs && generations > 3)
         {
@@ -139,8 +160,9 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             std::uniform_int_distribution<uint_least32_t> distBirth = WRandGen::distribute( 0,  99);
             if(distBirth(LangSeed::rng) <= 24)
             {
+                std::shared_ptr<MeaningLoader> personalMeaning = meaningLoader;
                 dictLoader.InputDictionary(filePaths[distDict(LangSeed::rng)]);
-                SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), std::make_shared<MeaningLoader>(meaningLoader), 0, 10, 10, 10, "Standard"))));
+                SpeakerPopulation.push_back(std::move(std::make_shared<Speaker>(Speaker(distx(LangSeed::rng), disty(LangSeed::rng), dictLoader.getDictionary(), distDictSizes(LangSeed::rng), personalMeaning, 0, 10, 10, 10, "Standard"))));
             }
         
 
