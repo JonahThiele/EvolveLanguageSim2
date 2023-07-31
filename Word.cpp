@@ -331,21 +331,21 @@ Word Word::OppositeMeaning() const
 std::vector<std::string> Word::rebuildVowelList(const std::vector<std::string> &inVowelList) const
 {
     std::vector<std::string> rebuiltVowelList = inVowelList;
+    // because vowels are only single chars currently 
+    // all we need to do is have a nested loop
+    //
+    for(int i = 0; i < rebuiltVowelList.size(); i++){
+        std::string::iterator it;
+        char Char = rebuiltVowelList[i][0];
+        it = std::find(value.begin(), value.end(), Char);
+        if(it == value.end()){
+            rebuiltVowelList.erase(rebuiltVowelList.begin() + i);
+            i--;
+       }
 
-    auto i = std::begin(rebuiltVowelList);
-    while( i != std::end(rebuiltVowelList))
-    {
-        //convert iterator into index to grab correct value
-        std::size_t found=value.find(rebuiltVowelList[std::distance(rebuiltVowelList.begin(), i)]);
-        if(found == std::string::npos)
-        {
-            i = rebuiltVowelList.erase(i);
-        } else 
-        {
-            ++i;
-        }
     }
-
+    //designates new vowels, removed for now due to standard similar vowels
+    /*
     if(rebuiltVowelList.size() < 1)
     {
         //replace with a max of 4 vowels repeats will be removed anyway
@@ -368,6 +368,7 @@ std::vector<std::string> Word::rebuildVowelList(const std::vector<std::string> &
             
    
         }
-    }
+    } */
+
     return rebuiltVowelList;
 }

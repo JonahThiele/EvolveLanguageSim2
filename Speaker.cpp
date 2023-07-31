@@ -248,8 +248,6 @@ std::vector<std::shared_ptr<Word>> Speaker::speakToOtherPerson(Speaker otherPers
    
     std::uniform_int_distribution<uint_least32_t> distributePercentShare( 0,  99);
 
-    int amntWordShared = dictionary.size() * (float)((distributePercentShare(LangSeed::rng) + 1) / 100);
-
     //shuffle the dictionary to share different words each time
    // std::shuffle(std::begin(dictionary), std::end(dictionary), std::default_random_engine());
 
@@ -257,18 +255,21 @@ std::vector<std::shared_ptr<Word>> Speaker::speakToOtherPerson(Speaker otherPers
     //remove blank strings words from dictionaries
     for( unsigned int i = 0; i < dictionary.size(); i++)
     {
-        if(dictionary[i]->getValue() == "")
+        if(dictionary[i]->getValue() == "" || dictionary[i]->getVowels().size() < 1)
         {
             dictionary.erase(dictionary.begin() + i);
+            i--;
         }
     }
+    
+    int amntWordShared = (dictionary.size() - 1) * (float)((distributePercentShare(LangSeed::rng) + 1) / 100);
 
     for(int i = 0; i < amntWordShared; i++)
     {
         std::uniform_int_distribution<uint_least32_t> distPercentMutate( 0,  99);
         
         //prestige increases the chance of being spread
-        if(distPercentMutate(LangSeed::rng) + 1 + dictionary[i]->getPrestige() <= PERCENT_SHARED_MUTATION)
+        if(distPercentMutate(LangSeed::rng) + 1 + dictionary[i]->getPrestige() >= PERCENT_SHARED_MUTATION)
         {
             // seed for the random different mutation methods ( 13 are currently defined )
             std::uniform_int_distribution<uint_least32_t> distWhichMutation( 0,  13); 
@@ -300,6 +301,7 @@ std::vector<std::shared_ptr<Word>> Speaker::speakToOtherPerson(Speaker otherPers
                 case 2:
                     {
                     //delete the vowel
+
                     std::shared_ptr<Word> sharedWord = std::make_shared<Word>(dictionary[i]->DeleteVowel());
                     sharedDictionary.push_back(std::move(sharedWord));
                     }
@@ -342,7 +344,8 @@ std::vector<std::shared_ptr<Word>> Speaker::speakToOtherPerson(Speaker otherPers
                         std::uniform_int_distribution<uint_least32_t> distStart( 0,  dictionary[i]->getValue().size() - 2);
                         int start = distStart(LangSeed::rng);
 
-                        std::uniform_int_distribution<uint_least32_t> distEnd( start,   dictionary[i]->getValue().size() - 1);
+                        //set it up so it is not inclusive
+                        std::uniform_int_distribution<uint_least32_t> distEnd( start + 1,   dictionary[i]->getValue().size() - 1);
                         int end = distEnd(LangSeed::rng);
 
                         std::shared_ptr<Word> sharedWord = std::make_shared<Word>(dictionary[i]->Shrink(start, end));
@@ -567,7 +570,7 @@ std::vector<std::shared_ptr<Word>> Speaker::speakToOtherPerson(Speaker otherPers
 
         }
     }
-
+    addNewVowels();
     return sharedDictionary; 
 
 }

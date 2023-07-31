@@ -1,103 +1,138 @@
 <?xml version="1.0"?>
 <Dictionary>
 	<Word>
-		<Value>dqnk</Value>
-		<Vowels>,</Vowels>
-		<Meaning>syntax</Meaning>
+		<Value>jacleea</Value>
+		<Vowels>a,</Vowels>
+		<Meaning>forestry</Meaning>
 	</Word>
 	<Word>
-		<Value>yneehh</Value>
-		<Vowels>,</Vowels>
-		<Meaning>customs</Meaning>
+		<Value>mbiileoyneehh</Value>
+		<Vowels>e,i,</Vowels>
+		<Meaning>stack</Meaning>
 	</Word>
 	<Word>
-		<Value>tlehian</Value>
-		<Vowels>a,e,,</Vowels>
-		<Meaning>performances</Meaning>
-	</Word>
-	<Word>
-		<Value>jdeheeou</Value>
-		<Vowels>e,o,,</Vowels>
+		<Value>jdehee</Value>
+		<Vowels>e,</Vowels>
 		<Meaning>fly</Meaning>
 	</Word>
 	<Word>
+		<Value>goterize</Value>
+		<Vowels>e,i,</Vowels>
+		<Meaning>julia</Meaning>
+	</Word>
+	<Word>
+		<Value>cwnraiue</Value>
+		<Vowels>a,e,i,</Vowels>
+		<Meaning>law</Meaning>
+	</Word>
+	<Word>
+		<Value>rurwdoeiiu</Value>
+		<Vowels>e,i,o,</Vowels>
+		<Meaning>month</Meaning>
+	</Word>
+	<Word>
+		<Value>jfegu</Value>
+		<Vowels>e,</Vowels>
+		<Meaning>roads</Meaning>
+	</Word>
+	<Word>
+		<Value>hgjieuau</Value>
+		<Vowels>a,e,i,</Vowels>
+		<Meaning>advance</Meaning>
+	</Word>
+	<Word>
+		<Value>cwqgoterize</Value>
+		<Vowels>e,i,</Vowels>
+		<Meaning>the opposite of julia</Meaning>
+	</Word>
+	<Word>
+		<Value>khcjieaou</Value>
+		<Vowels>a,e,i,o,</Vowels>
+		<Meaning>ruby</Meaning>
+	</Word>
+	<Word>
 		<Value>qwaeu</Value>
-		<Vowels>a,e,,</Vowels>
+		<Vowels>a,e,</Vowels>
 		<Meaning>inventory</Meaning>
 	</Word>
 	<Word>
 		<Value>mbiileo</Value>
-		<Vowels>e,i,,</Vowels>
+		<Vowels>e,i,</Vowels>
 		<Meaning>stack</Meaning>
 	</Word>
 	<Word>
-		<Value>hgjieuau</Value>
-		<Vowels>a,e,i,,</Vowels>
-		<Meaning>advance</Meaning>
-	</Word>
-	<Word>
-		<Value>tvb</Value>
-		<Vowels>,</Vowels>
-		<Meaning>threat</Meaning>
-	</Word>
-	<Word>
-		<Value>f</Value>
-		<Vowels>,</Vowels>
-		<Meaning>ports</Meaning>
-	</Word>
-	<Word>
-		<Value>rurwdoeiiu</Value>
-		<Vowels>e,i,o,,</Vowels>
-		<Meaning>month</Meaning>
-	</Word>
-	<Word>
-		<Value>zvkgaa</Value>
-		<Vowels>,</Vowels>
-		<Meaning>slovakia</Meaning>
-	</Word>
-	<Word>
-		<Value>jfegu</Value>
-		<Vowels>e,,</Vowels>
-		<Meaning>roads</Meaning>
-	</Word>
-	<Word>
-		<Value>cyot</Value>
-		<Vowels>,</Vowels>
-		<Meaning>short</Meaning>
-	</Word>
-	<Word>
-		<Value>sm</Value>
-		<Vowels>,</Vowels>
-		<Meaning>designs</Meaning>
-	</Word>
-	<Word>
 		<Value>pcjfei</Value>
-		<Vowels>e,,</Vowels>
+		<Vowels>e,</Vowels>
 		<Meaning>larry</Meaning>
 	</Word>
 	<Word>
-		<Value>y</Value>
-		<Vowels>,</Vowels>
-		<Meaning>leasing</Meaning>
+		<Value>mlbfbei</Value>
+		<Vowels>e,</Vowels>
+		<Meaning>fisheries</Meaning>
 	</Word>
 	<Word>
-		<Value>qbpcvj</Value>
-		<Vowels>,</Vowels>
-		<Meaning>celtic</Meaning>
+		<Value>ivuaciea</Value>
+		<Vowels>a,e,i,</Vowels>
+		<Meaning>all</Meaning>
+	</Word>
+	<Word>
+		<Value>tlehian</Value>
+		<Vowels>a,e,</Vowels>
+		<Meaning>performances</Meaning>
+	</Word>
+	<Word>
+		<Value>jdeheeou</Value>
+		<Vowels>e,o,</Vowels>
+		<Meaning>fly</Meaning>
+	</Word>
+	<Word>
+		<Value>cjieaou</Value>
+		<Vowels>a,e,i,o,</Vowels>
+		<Meaning>ruby</Meaning>
+	</Word>
+	<Word>
+		<Value>gtupeu</Value>
+		<Vowels>e,</Vowels>
+		<Meaning>shipment</Meaning>
+	</Word>
+	<Word>
+		<Value>nbfoooe</Value>
+		<Vowels>e,</Vowels>
+		<Meaning>arbitration</Meaning>
+	</Word>
+	<Word>
+		<Value>poyuapo</Value>
+		<Vowels>a,o,</Vowels>
+		<Meaning>variance</Meaning>
+	</Word>
+	<Word>
+		<Value>cwlehian</Value>
+		<Vowels>a,e,</Vowels>
+		<Meaning>the opposite of performances</Meaning>
+	</Word>
+	<Word>
+		<Value>mbiijfegueojhdovj</Value>
+		<Vowels>e,i,</Vowels>
+		<Meaning>stack</Meaning>
+	</Word>
+	<Word>
+		<Value>fofowouooi</Value>
+		<Vowels>i,o,</Vowels>
+		<Meaning>discount</Meaning>
+	</Word>
+	<Word>
+		<Value>lbrurwdoeiiu</Value>
+		<Vowels>e,i,o,</Vowels>
+		<Meaning>month</Meaning>
 	</Word>
 	<Word>
 		<Value>bdaqsiao</Value>
-		<Vowels>a,i,,</Vowels>
+		<Vowels>a,i,</Vowels>
 		<Meaning>receipt</Meaning>
 	</Word>
 	<Word>
-		<Value>cwnraiue</Value>
-		<Vowels>a,e,i,,</Vowels>
-		<Meaning>law</Meaning>
-	</Word>
-	<Word>
-		<Value>zvu</Value>
-		<Vowels>,</Vowels>
-		<Meaning>documents</Meaning>
+		<Value>faae</Value>
+		<Vowels>a,e,</Vowels>
+		<Meaning>denmark</Meaning>
 	</Word>
 </Dictionary>
