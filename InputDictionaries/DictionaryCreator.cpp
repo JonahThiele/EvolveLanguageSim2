@@ -89,7 +89,9 @@ int main(int argc, char** argv){
         //one word per line this should work        
         wordList.push_back(line);
     }
-
+    
+    //cut down the word list to the top 500 words so less obscure words are used
+    wordList = {wordList.begin(), wordList.begin() + 500};
     //handle the arguments
 
     //hard coding the different dialect options right now and will rewrite them later to generate on the fly

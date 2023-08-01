@@ -90,6 +90,12 @@ void DictionaryLoader::OutputDictionary(std::vector<std::shared_ptr<Word>> Speak
         pugi::xml_node wordMeaning = dictionaryWord.append_child("Meaning");
         wordMeaning.append_child(pugi::node_pcdata).set_value(word->getMeaning().c_str());
 
+        pugi::xml_node wordBase = dictionaryWord.append_child("BaseWord");
+        wordBase.append_child(pugi::node_pcdata).set_value(word->getBaseWord().c_str());
+
+        pugi::xml_node wordPrestige = dictionaryWord.append_child("Prestige");
+        wordPrestige.append_child(pugi::node_pcdata).set_value(std::to_string(word->getPrestige()).c_str());
+
     }
     
     //save and close the dictionary as a new xml file

@@ -1,1 +1,8 @@
+This is the old command for the python dictionary generation script
+
 python3 randomDictCreator.py --MaxWordLength 15 --AmountOfWords 20 --MaxAmountOfVowels 5 --FileName InputDict1.xml
+
+This is the new command for the dictionary creator program
+./DictCreator -m 15 -a 20 -f dictionary.xml
+
+Run ./DictCreator -h for more details

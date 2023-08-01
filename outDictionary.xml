@@ -1,138 +1,73 @@
 <?xml version="1.0"?>
 <Dictionary>
 	<Word>
-		<Value>jacleea</Value>
-		<Vowels>a,</Vowels>
-		<Meaning>forestry</Meaning>
-	</Word>
-	<Word>
-		<Value>mbiileoyneehh</Value>
-		<Vowels>e,i,</Vowels>
-		<Meaning>stack</Meaning>
-	</Word>
-	<Word>
-		<Value>jdehee</Value>
-		<Vowels>e,</Vowels>
-		<Meaning>fly</Meaning>
-	</Word>
-	<Word>
-		<Value>goterize</Value>
-		<Vowels>e,i,</Vowels>
-		<Meaning>julia</Meaning>
-	</Word>
-	<Word>
-		<Value>cwnraiue</Value>
-		<Vowels>a,e,i,</Vowels>
-		<Meaning>law</Meaning>
-	</Word>
-	<Word>
-		<Value>rurwdoeiiu</Value>
-		<Vowels>e,i,o,</Vowels>
-		<Meaning>month</Meaning>
-	</Word>
-	<Word>
-		<Value>jfegu</Value>
-		<Vowels>e,</Vowels>
-		<Meaning>roads</Meaning>
-	</Word>
-	<Word>
-		<Value>hgjieuau</Value>
-		<Vowels>a,e,i,</Vowels>
-		<Meaning>advance</Meaning>
-	</Word>
-	<Word>
-		<Value>cwqgoterize</Value>
-		<Vowels>e,i,</Vowels>
-		<Meaning>the opposite of julia</Meaning>
-	</Word>
-	<Word>
-		<Value>khcjieaou</Value>
-		<Vowels>a,e,i,o,</Vowels>
-		<Meaning>ruby</Meaning>
-	</Word>
-	<Word>
-		<Value>qwaeu</Value>
-		<Vowels>a,e,</Vowels>
-		<Meaning>inventory</Meaning>
-	</Word>
-	<Word>
-		<Value>mbiileo</Value>
-		<Vowels>e,i,</Vowels>
-		<Meaning>stack</Meaning>
-	</Word>
-	<Word>
-		<Value>pcjfei</Value>
-		<Vowels>e,</Vowels>
-		<Meaning>larry</Meaning>
-	</Word>
-	<Word>
-		<Value>mlbfbei</Value>
-		<Vowels>e,</Vowels>
-		<Meaning>fisheries</Meaning>
-	</Word>
-	<Word>
-		<Value>ivuaciea</Value>
-		<Vowels>a,e,i,</Vowels>
-		<Meaning>all</Meaning>
-	</Word>
-	<Word>
-		<Value>tlehian</Value>
-		<Vowels>a,e,</Vowels>
-		<Meaning>performances</Meaning>
-	</Word>
-	<Word>
-		<Value>jdeheeou</Value>
-		<Vowels>e,o,</Vowels>
-		<Meaning>fly</Meaning>
-	</Word>
-	<Word>
-		<Value>cjieaou</Value>
-		<Vowels>a,e,i,o,</Vowels>
-		<Meaning>ruby</Meaning>
-	</Word>
-	<Word>
-		<Value>gtupeu</Value>
-		<Vowels>e,</Vowels>
-		<Meaning>shipment</Meaning>
-	</Word>
-	<Word>
 		<Value>nbfoooe</Value>
 		<Vowels>e,</Vowels>
 		<Meaning>arbitration</Meaning>
+		<BaseWord>nbfoooe</BaseWord>
+		<Prestige>37</Prestige>
+	</Word>
+	<Word>
+		<Value>mmivuaciea</Value>
+		<Vowels>a,e,i,</Vowels>
+		<Meaning>all</Meaning>
+		<BaseWord>mmivuaciea</BaseWord>
+		<Prestige>50</Prestige>
+	</Word>
+	<Word>
+		<Value>stiuudi</Value>
+		<Vowels>i,</Vowels>
+		<Meaning>twist</Meaning>
+		<BaseWord>stiuudi</BaseWord>
+		<Prestige>19</Prestige>
 	</Word>
 	<Word>
 		<Value>poyuapo</Value>
 		<Vowels>a,o,</Vowels>
 		<Meaning>variance</Meaning>
+		<BaseWord>poyuapo</BaseWord>
+		<Prestige>2</Prestige>
 	</Word>
 	<Word>
-		<Value>cwlehian</Value>
-		<Vowels>a,e,</Vowels>
-		<Meaning>the opposite of performances</Meaning>
+		<Value>fjacleea</Value>
+		<Vowels>a,</Vowels>
+		<Meaning>forestry</Meaning>
+		<BaseWord>fjacleea</BaseWord>
+		<Prestige>62</Prestige>
 	</Word>
 	<Word>
-		<Value>mbiijfegueojhdovj</Value>
-		<Vowels>e,i,</Vowels>
-		<Meaning>stack</Meaning>
+		<Value>gtupeu</Value>
+		<Vowels>e,</Vowels>
+		<Meaning>shipment</Meaning>
+		<BaseWord>gtupeu</BaseWord>
+		<Prestige>69</Prestige>
 	</Word>
 	<Word>
 		<Value>fofowouooi</Value>
 		<Vowels>i,o,</Vowels>
 		<Meaning>discount</Meaning>
+		<BaseWord>fofowouooi</BaseWord>
+		<Prestige>30</Prestige>
 	</Word>
 	<Word>
-		<Value>lbrurwdoeiiu</Value>
-		<Vowels>e,i,o,</Vowels>
-		<Meaning>month</Meaning>
+		<Value>dafi</Value>
+		<Vowels>a,</Vowels>
+		<Meaning>over</Meaning>
+		<BaseWord>dafi</BaseWord>
+		<Prestige>64</Prestige>
 	</Word>
 	<Word>
-		<Value>bdaqsiao</Value>
-		<Vowels>a,i,</Vowels>
-		<Meaning>receipt</Meaning>
+		<Value>da</Value>
+		<Vowels>a,</Vowels>
+		<Meaning>over</Meaning>
+		<BaseWord>dafi</BaseWord>
+		<Prestige>64</Prestige>
 	</Word>
 	<Word>
-		<Value>faae</Value>
-		<Vowels>a,e,</Vowels>
-		<Meaning>denmark</Meaning>
+		<Value>mmiv</Value>
+		<Vowels>i,</Vowels>
+		<Meaning>all</Meaning>
+		<BaseWord>mmivuaciea</BaseWord>
+		<Prestige>50</Prestige>
 	</Word>
 </Dictionary>

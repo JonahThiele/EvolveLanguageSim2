@@ -1,46 +1,12 @@
 #include "SimulationHandler.hpp"
+#include "indicators.hpp"
 
 
-void LoadingBar(int currentProgress, int lastProgress, int currentUnit, int MaxUnit, int BarId, int numStatusBars){
-
-     if(BarId < 4 &&  !(BarId < 0)){
-
-      float  progressBarInc = 60 / MaxUnit;
-
-      currentProgress += progressBarInc;
-
-      if(currentUnit < MaxUnit){
-
-          if(std::round(currentProgress) > lastProgress){
-
-              lastProgress = std::round(currentProgress);
-
-              std::cout << "\x1b[0G" << "\x1b[" <<  BarId << "A" << MaxUnit - currentUnit << "/" << MaxUnit <<
-                  std::fflush(stdout);
-
-                 int lastProgressTemp = lastProgress;
-                  while(lastProgressTemp--){
-                       std::cout << "#";
-
-                   }
-                   std::cout << "\x1b[1B\x1b[0G";
-
-          }
-
-      }
-     }
-
-  }
-
-
-
-
-
-void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generations)
+void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generationMax)
 {
     
     //save generation max so we can create a proper loading screen
-    int generationMax = generations;
+    int generations = 0;
 
     std::vector<std::shared_ptr<Speaker>> SpeakerPopulation;
     std::vector<std::shared_ptr<Barbarian>> BarbarianPopulation;
@@ -96,31 +62,42 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
         
     }
     
-    bool barbs = BARBS_ON;
-   
-    int digitOffset = (generations < 10 ? 1 :   
-        (generations < 100 ? 2 :   
-        (generations < 1000 ? 3 :   
-        (generations < 10000 ? 4 :   
-        (generations < 100000 ? 5 :   
-        (generations < 1000000 ? 6 :   
-        (generations < 10000000 ? 7 :  
-        (generations < 100000000 ? 8 :  
-        (generations < 1000000000 ? 9 :  
-        10)))))))));  
+    bool barbs = BARBS_ON; 
 
-    //print out the start time
-   std::time_t now = std::time(nullptr);
-   std::tm localtm = *std::localtime(&now);
+    std::string str = "0\\" + generationMax;
 
-   std::cout.imbue(std::locale("en_US.UTF-8"));
-    
-   std::cout << "starting at " << std::put_time(&localtm, "%c") << '\n';
-  
-    
-    while(generations > 0)
+    indicators::show_console_cursor(false);
+
+   indicators::BlockProgressBar genBar{
+              indicators::option::BarWidth{80},
+              indicators::option::Start{"["},
+              indicators::option::End{"]"},
+              indicators::option::PrefixText{"Generations"},
+              indicators::option::PostfixText{str},
+              indicators::option::ShowElapsedTime{false},
+              indicators::option::ForegroundColor{indicators::Color::white}  ,
+              indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+              };
+
+    indicators::BlockProgressBar popBar{
+                indicators::option::BarWidth{80},
+                indicators::option::Start{"["},
+                indicators::option::End{"]"},
+                indicators::option::PrefixText{"Speakers"},
+                indicators::option::ShowElapsedTime{false},
+                indicators::option::ForegroundColor{indicators::Color::white}  ,
+                indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+                };
+
+   indicators::DynamicProgress<indicators::BlockProgressBar> bars(genBar, popBar);
+
+    while(generations < generationMax)
     {
-       
+
+         bars[0].set_progress((float)((float)generations / (float)generationMax) * 100);
+         bars[0].set_option(indicators::option::PostfixText{std::to_string(generations) + "/" + std::to_string(generationMax)});          
+
+         bars[1].set_progress(0);
 
         if(barbs && generations > 3)
         {
@@ -134,27 +111,33 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
             }
             barbs = !barbs;
         }
-
-       
+        
         for(unsigned int speaker1 = 0; speaker1 < SpeakerPopulation.size(); speaker1++)
         {
-
+            
+              bars[1].set_progress((float)((float)speaker1 / (float)SpeakerPopulation.size()) * 100);
+              bars[1].set_option(indicators::option::PostfixText{std::to_string(speaker1) + "/" + std::to_string(SpeakerPopulation.size())});
+              
             if(SpeakerPopulation[speaker1]->increaseAge())
             {
                 for( unsigned int speaker2 = 0; speaker2 < SpeakerPopulation.size(); speaker2++)
                 {
-                    if(std::abs(SpeakerPopulation[speaker1]->getX()  -  SpeakerPopulation[speaker2]->getX()) <= CLOSEX && std::abs(SpeakerPopulation[speaker1]->getY()  -  SpeakerPopulation[speaker2]->getY()) <= CLOSEY && SpeakerPopulation[speaker2]->getTag() == SpeakerPopulation[speaker1]->getTag())
+
+                     bars[1].set_progress((float)((float)speaker2 / (float)SpeakerPopulation.size()) * 100);
+                     bars[1].set_option(indicators::option::PostfixText{std::to_string(speaker2) + "/" + std::to_string(SpeakerPopulation.size())});
+                    
+                     if(std::abs(SpeakerPopulation[speaker1]->getX()  -  SpeakerPopulation[speaker2]->getX()) <= CLOSEX && std::abs(SpeakerPopulation[speaker1]->getY()  -  SpeakerPopulation[speaker2]->getY()) <= CLOSEY && SpeakerPopulation[speaker2]->getTag() == SpeakerPopulation[speaker1]->getTag())
                     {
                         SpeakerPopulation[speaker2]->learnWords(SpeakerPopulation[speaker1]->speakToOtherPerson(*SpeakerPopulation[speaker2]));
                     }
                 
                 }
- 
             } else 
             {
                 SpeakerPopulation.erase(SpeakerPopulation.begin() + speaker1);
                 speaker1--;
             }
+
 
             //25% of the time new births occur
             std::uniform_int_distribution<uint_least32_t> distBirth = WRandGen::distribute( 0,  99);
@@ -167,15 +150,23 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
         
 
         }
+
+        bars[1].set_progress(100);
+        bars[1].set_option(indicators::option::PostfixText{std::to_string(SpeakerPopulation.size()) + "/" + std::to_string(SpeakerPopulation.size())});
+        bars[1].is_completed();
         
-        generations--;
+        generations++;
             
     }
-    //output a few xml
+        bars[0].set_progress(100);
+        bars[0].set_option(indicators::option::PostfixText{std::to_string(generations) + "/" + std::to_string(generationMax)});
+        bars[0].is_completed();
+        //output a few xml
 
-    std::uniform_int_distribution<uint_least32_t> Poppick = WRandGen::distribute( 0,  SpeakerPopulation.size());
+        std::uniform_int_distribution<uint_least32_t> Poppick = WRandGen::distribute( 0,  SpeakerPopulation.size());
 
-    dictLoader.OutputDictionary(SpeakerPopulation[Poppick(LangSeed::rng)]->getDict());
-    
+        dictLoader.OutputDictionary(SpeakerPopulation[Poppick(LangSeed::rng)]->getDict());
+        
+        indicators::show_console_cursor(true);
 
 }
