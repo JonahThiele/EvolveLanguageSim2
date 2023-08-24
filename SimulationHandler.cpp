@@ -1,7 +1,6 @@
 #include "SimulationHandler.hpp"
 #include "indicators.hpp"
 
-
 void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std::string dictionary2, std::string dictionary3, int generationMax)
 {
     
@@ -67,8 +66,9 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
     std::string str = "0\\" + generationMax;
 
     indicators::show_console_cursor(false);
+  
 
-   indicators::BlockProgressBar genBar{
+   indicators::ProgressBar genBar{
               indicators::option::BarWidth{80},
               indicators::option::Start{"["},
               indicators::option::End{"]"},
@@ -79,7 +79,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
               indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
               };
 
-    indicators::BlockProgressBar popBar{
+   indicators::ProgressBar popBar{
                 indicators::option::BarWidth{80},
                 indicators::option::Start{"["},
                 indicators::option::End{"]"},
@@ -89,7 +89,7 @@ void SimulationHandler::RunSimulation(int speakers, std::string dictionary1, std
                 indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
                 };
 
-   indicators::DynamicProgress<indicators::BlockProgressBar> bars(genBar, popBar);
+   indicators::DynamicProgress<indicators::ProgressBar> bars(genBar, popBar);
 
     while(generations < generationMax)
     {
